@@ -24,6 +24,9 @@ public class DrivingSuperDuck extends OpMode
     private DcMotor leftBackDrive = null;       //wheels
     private DcMotor rightBackDrive = null;      //wheels
     private DcMotor DuckyDropper = null;
+    private DcMotor linearSlides = null;
+    private DcMotor intake = null;
+    private CRServo cargoBox = null;
 
 
 
@@ -41,7 +44,9 @@ public class DrivingSuperDuck extends OpMode
         leftBackDrive = hardwareMap.get(DcMotor.class, "left_back");
         rightBackDrive = hardwareMap.get(DcMotor.class, "right_back");
         DuckyDropper = hardwareMap.get(DcMotor.class, "ducky_dropper");
-
+        linearSlides = hardwareMap.get(DcMotor.class, "slides");
+        intake = hardwareMap.get(DcMotor.class, "intake");
+        cargoBox = hardwareMap.get(CRServo.class, "cargo");
 
 
         //Reset the Encoder
@@ -53,6 +58,8 @@ public class DrivingSuperDuck extends OpMode
         rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         DuckyDropper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        linearSlides.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
 
@@ -63,6 +70,8 @@ public class DrivingSuperDuck extends OpMode
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
         DuckyDropper.setDirection(DcMotorSimple.Direction.FORWARD);
+        linearSlides.setDirection(DcMotorSimple.Direction.FORWARD);
+        intake.setDirection(DcMotorSimple.Direction.FORWARD);
 
 
 
@@ -71,6 +80,9 @@ public class DrivingSuperDuck extends OpMode
         leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         DuckyDropper.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        linearSlides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
 
 
 
@@ -96,6 +108,8 @@ public class DrivingSuperDuck extends OpMode
         double leftBackPower;
         double rightBackPower;
         double duckyDropPower;
+        double linearSlidePower;
+        double intakePower;
         //power variables to be modified and set the motor powers to.
 
 //Drive, turning, and strafe//
@@ -110,7 +124,13 @@ public class DrivingSuperDuck extends OpMode
         rightFrontPower = Range.clip(drive - turn - strafe, -1, 1);
         leftBackPower = Range.clip(drive + turn - strafe, -1, 1);
         rightBackPower = Range.clip(drive - turn + strafe, -1, 1);
-
+        intakePower = Range.clip(gamepad2.right_stick_y, -1,1);
+        if (gamepad2.left_bumper){
+            linearSlidePower = 0.5;
+        }
+        else {
+            linearSlidePower = Range.clip(gamepad2.left_stick_y, -0.5, 0.5);
+        }
         duckyDropPower = 0.6;
 
 // SLOW WHEELS
@@ -126,8 +146,8 @@ public class DrivingSuperDuck extends OpMode
             rightFrontPower = rightFrontPower + 0;
         }
 
-
-        if (gamepad1.a){
+//
+        if (gamepad2.a){
             DuckyDropper.setPower(duckyDropPower);
         }
         else {
@@ -157,11 +177,14 @@ public class DrivingSuperDuck extends OpMode
             leftBackPower = leftBackPower;
         }
 
+
         leftFrontDrive.setPower(leftFrontPower);
         rightFrontDrive.setPower(rightFrontPower);
         leftBackDrive.setPower(leftBackPower);
         rightBackDrive.setPower(rightBackPower);
-//        DuckyDropper.setPower(duckyDropPower);
+        DuckyDropper.setPower(duckyDropPower);
+        linearSlides.setPower(linearSlidePower);
+        intake.setPower(intakePower);
     }
 
     //Stop the robot//
@@ -171,6 +194,8 @@ public class DrivingSuperDuck extends OpMode
         rightFrontDrive.setPower(0);
         leftBackDrive.setPower(0);
         rightBackDrive.setPower(0);
+        linearSlides.setPower(0);
+        intake.setPower(0);
 
     }
 }
