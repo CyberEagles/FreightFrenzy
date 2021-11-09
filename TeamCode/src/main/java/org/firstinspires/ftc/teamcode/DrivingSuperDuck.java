@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 @TeleOp
@@ -26,7 +27,7 @@ public class DrivingSuperDuck extends OpMode
     private DcMotor DuckyDropper = null;
     private DcMotor linearSlides = null;
     private DcMotor intake = null;
-    private CRServo cargoBox = null;
+    private Servo cargoBox = null;
 
 
 
@@ -46,11 +47,11 @@ public class DrivingSuperDuck extends OpMode
         DuckyDropper = hardwareMap.get(DcMotor.class, "ducky_dropper");
         linearSlides = hardwareMap.get(DcMotor.class, "slides");
         intake = hardwareMap.get(DcMotor.class, "intake");
-        cargoBox = hardwareMap.get(CRServo.class, "cargo");
+        cargoBox = hardwareMap.get(Servo.class, "cargo");
 
 
         //Reset the Encoder
-
+        linearSlides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Set the modes for each motor
         leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -58,8 +59,8 @@ public class DrivingSuperDuck extends OpMode
         rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         DuckyDropper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        linearSlides.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
 
 
 
@@ -82,6 +83,7 @@ public class DrivingSuperDuck extends OpMode
         DuckyDropper.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         linearSlides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
 
 
 
@@ -124,14 +126,52 @@ public class DrivingSuperDuck extends OpMode
         rightFrontPower = Range.clip(drive - turn - strafe, -1, 1);
         leftBackPower = Range.clip(drive + turn - strafe, -1, 1);
         rightBackPower = Range.clip(drive - turn + strafe, -1, 1);
-        intakePower = Range.clip(gamepad2.right_stick_y, -1,1);
+        intakePower = Range.clip(gamepad2.right_stick_y, -0.9,0.9);
+//        if (gamepad2.left_bumper){
+//            linearSlidePower = 0.5;
+//        }
+//        else {
+//            linearSlidePower = Range.clip(gamepad2.left_stick_y, -0.5, 0.5);
+
+
+        telemetry.addData("Position",linearSlides.getCurrentPosition());
+//        telemetry.addData("Slide Power", linearSlidePower);
         if (gamepad2.left_bumper){
-            linearSlidePower = 0.5;
+            linearSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            linearSlides.setTargetPosition(1600);
+            linearSlides.setPower(1.0);
+        }
+        else if (gamepad2.right_bumper){
+            linearSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            linearSlides.setTargetPosition(0);
+            linearSlides.setPower(-1.0);
+        }
+        else if (gamepad2.dpad_down){
+            linearSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            linearSlides.setTargetPosition(470);
+
+            if (linearSlides.getCurrentPosition()<470){
+                linearSlides.setPower(1.0);
+            }
+            else if (linearSlides.getCurrentPosition()>470){
+                linearSlides.setPower(-1.0);
+            }
+        }
+        else if (gamepad2.dpad_up){
+            linearSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            linearSlides.setTargetPosition(850);
+            if (linearSlides.getCurrentPosition()<850){
+                linearSlides.setPower(1.0);
+            }
+            else if (linearSlides.getCurrentPosition()>850){
+                linearSlides.setPower(-1.0);
+            }
         }
         else {
-            linearSlidePower = Range.clip(gamepad2.left_stick_y, -0.5, 0.5);
+            linearSlides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            linearSlides.setPower(0);
         }
-        duckyDropPower = 0.6;
+
 
 // SLOW WHEELS
         if (gamepad1.b) {
@@ -147,14 +187,21 @@ public class DrivingSuperDuck extends OpMode
         }
 
 //
+        if (gamepad2.x){
+            cargoBox.setPosition(0);
+        }
+        else
+            cargoBox.setPosition(1);
+        telemetry.addData("servo position", cargoBox.getPosition());
+
         if (gamepad2.a){
-            DuckyDropper.setPower(duckyDropPower);
+            DuckyDropper.setPower(0.6);
         }
         else {
             DuckyDropper.setPower(0);
         }
 
-        telemetry.addData("ducky Drop Power = ", duckyDropPower);
+
 
 
         // not locking the wheels while turning
@@ -182,8 +229,6 @@ public class DrivingSuperDuck extends OpMode
         rightFrontDrive.setPower(rightFrontPower);
         leftBackDrive.setPower(leftBackPower);
         rightBackDrive.setPower(rightBackPower);
-        DuckyDropper.setPower(duckyDropPower);
-        linearSlides.setPower(linearSlidePower);
         intake.setPower(intakePower);
     }
 
@@ -194,8 +239,10 @@ public class DrivingSuperDuck extends OpMode
         rightFrontDrive.setPower(0);
         leftBackDrive.setPower(0);
         rightBackDrive.setPower(0);
+        DuckyDropper.setPower(0);
         linearSlides.setPower(0);
         intake.setPower(0);
 
     }
+
 }
