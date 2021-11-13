@@ -58,7 +58,7 @@ public class OdometerHardware {
 
     //Hardware Map Names for drive motors and odometry wheels. THIS WILL CHANGE ON EACH ROBOT, YOU NEED TO UPDATE THESE VALUES ACCORDINGLY
     String rfName = "right_front", rbName = "right_back", lfName = "left_front", lbName = "left_back";
-    String verticalLeftEncoderName = rfName, verticalRightEncoderName = lfName, horizontalEncoderName = lbName;
+    String verticalLeftEncoderName = lbName, verticalRightEncoderName = rbName, horizontalEncoderName = rfName;
 
     OdometryGlobalCoordinatePosition globalPositionUpdate;
 
@@ -248,8 +248,8 @@ public class OdometerHardware {
 
 
         leftFrontDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightFrontDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightBackDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightFrontDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightBackDrive.setDirection(DcMotorSimple.Direction.FORWARD);
         leftBackDrive.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
@@ -269,9 +269,9 @@ public class OdometerHardware {
 //        globalPositionUpdate.reverseNormalEncoder();
 
         rightBackDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-        verticalLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-        verticalRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        horizontal.setDirection(DcMotorSimple.Direction.REVERSE);
+        verticalLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        verticalRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        horizontal.setDirection(DcMotorSimple.Direction.FORWARD);
 
         opMode.telemetry.addData("Status", "Hardware Map Init Complete");
         opMode.telemetry.update();
