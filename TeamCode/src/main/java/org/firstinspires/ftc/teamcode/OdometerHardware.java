@@ -10,14 +10,17 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import java.util.List;
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import android.hardware.camera2.CameraDevice;
+import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.Camera;
 
 
 
@@ -66,6 +69,16 @@ public class OdometerHardware {
 
     // Since ImageTarget trackables use mm to specifiy their dimensions, we must use mm for all the physical dimension.
     // We will define some constants and conversions here
+    private static final String TFOD_MODEL_ASSET = "FreightFrenzy_DM.tflite";
+    private static final String[] LABELS = {
+//      "Ball",
+//      "Cube",
+            "Duck",
+            "Marker"
+    };
+    private static final String VUFORIA_KEY =
+            "Ac4K6BD/////AAABmQmEfMSCD0j8hOxBFYTS/CQj/pGySibYpkLudGb7MN12FPBJ3Om18kKjOQTFwk8o9C3FEY0LIcBYqcPMMB35sfLHF2uwiF/9ElfONAFain0CysTHKvL/mOpSZZxOqevoexo9iNlxftfciARbiruvu5kYGZroBCho5R6WHzHjbGfEAGWjIsckDKRvQQkKw5p5N21GqH5ium/tN/TO0asmGwz0RTb4Djt+P8FSynFSJnmC3gsq97fUipK802hR2A4SvzgJKEmrgoNnOxKGx7E/AkBKGY/mIrTy7/Trhq/mnK6STtm4Vl9GBfnsOj3KAexo7JdfFNCPEuKrMXs7wHfvnEYRS4Lwwf/kwSISAQvIN+8N";
+
     private static final float mmPerInch        = 25.4f;
     private static final float mmTargetHeight   = (6) * mmPerInch;          // the height of the center of the target image above the floor
 
@@ -84,13 +97,14 @@ public class OdometerHardware {
     private static final float quadField  = 36 * mmPerInch;
 
     // Class Members
-    private OpenGLMatrix lastLocation = null;
-    private VuforiaLocalizer vuforia = null;
-    private boolean targetVisible = false;
-    private float phoneXRotate    = 0;
-    private float phoneYRotate    = 0;
-    private float phoneZRotate    = 0;
-    List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
+    public VuforiaLocalizer vuforia;
+
+    /**
+     * {@link #tfod} is the variable we will use to store our instance of the TensorFlow Object
+     * Detection engine.
+     */
+    public TFObjectDetector tfod;
+
 
 
     //Initialize hardware map values. PLEASE UPDATE THESE VALUES TO MATCH YOUR CONFIGURATION
@@ -103,7 +117,32 @@ public class OdometerHardware {
 
     //        globalPositionUpdate.reverseLeftEncoder();
 
+    public void initVuforia() {
+        /*
+         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
+         */
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
+        parameters.vuforiaLicenseKey = VUFORIA_KEY;
+        parameters.cameraName = opMode.hardwareMap.get(WebcamName.class, "Webcam 1");
+
+
+        //  Instantiate the Vuforia engine
+        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+
+        // Loading trackables is not necessary for the TensorFlow Object Detection engine.
+    }
+    public void initTfod() {
+        int tfodMonitorViewId = opMode.hardwareMap.appContext.getResources().getIdentifier(
+                "tfodMonitorViewId", "id", opMode.hardwareMap.appContext.getPackageName());
+        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+        tfodParameters.minResultConfidence = 0.85f;
+        tfodParameters.isModelTensorFlow2 = true;
+        tfodParameters.inputSize = 1080;
+        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
+        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
+
+    }
 
 
 
@@ -143,9 +182,9 @@ public class OdometerHardware {
                 if ( angleDifference > 0) {
                     //turn right
                     leftFrontDrive.setPower(robotPower);
-                    rightFrontDrive.setPower(robotPower);
+                    rightFrontDrive.setPower(-robotPower);
                     leftBackDrive.setPower(robotPower);
-                    rightBackDrive.setPower(robotPower);
+                    rightBackDrive.setPower(-robotPower);
 
                     opMode.telemetry.addData("Turning right", "now");
                     opMode.telemetry.addData("X Position (inches)", globalPositionUpdate.returnXCoordinate() / COUNTS_PER_INCH);
@@ -161,9 +200,9 @@ public class OdometerHardware {
                 }
                 else if (angleDifference< 0) {
                     leftFrontDrive.setPower(-robotPower);
-                    rightFrontDrive.setPower(-robotPower);
+                    rightFrontDrive.setPower(robotPower);
                     leftBackDrive.setPower(-robotPower);
-                    rightBackDrive.setPower(-robotPower);
+                    rightBackDrive.setPower(robotPower);
 
 
                     opMode. telemetry.addData("Turning left", "now");
@@ -205,12 +244,13 @@ public class OdometerHardware {
 
     public void initDriveHardwareMap(){
         String rfName = "right_front", rbName = "right_back", lfName = "left_front", lbName = "left_back";
-        String vlEncoderName = rfName, vrEncoderName = lfName, hEncoderName = lbName;
+        String vlEncoderName = lbName, vrEncoderName = rbName, hEncoderName = rfName;
 
         rightFrontDrive = opMode.hardwareMap.dcMotor.get(rfName);
         rightBackDrive = opMode.hardwareMap.dcMotor.get(rbName);
         leftFrontDrive = opMode.hardwareMap.dcMotor.get(lfName);
         leftBackDrive = opMode.hardwareMap.dcMotor.get(lbName);
+
 
 
 
@@ -352,9 +392,9 @@ public class OdometerHardware {
                 if ( angleDifference > 0) {
                     //turn right
                     leftFrontDrive.setPower(robotPower);
-                    rightFrontDrive.setPower(robotPower);
+                    rightFrontDrive.setPower(-robotPower);
                     leftBackDrive.setPower(robotPower);
-                    rightBackDrive.setPower(robotPower);
+                    rightBackDrive.setPower(-robotPower);
 
                     opMode.telemetry.addData("Turning right", "now");
                     opMode.telemetry.addData("X Position (inches)", globalPositionUpdate.returnXCoordinate() / COUNTS_PER_INCH);
@@ -372,9 +412,9 @@ public class OdometerHardware {
                 }
                 else if (angleDifference< 0) {
                     leftFrontDrive.setPower(-robotPower);
-                    rightFrontDrive.setPower(-robotPower);
+                    rightFrontDrive.setPower(robotPower);
                     leftBackDrive.setPower(-robotPower);
-                    rightBackDrive.setPower(-robotPower);
+                    rightBackDrive.setPower(robotPower);
 
 
                     opMode. telemetry.addData("Turning left", "now");
@@ -405,24 +445,24 @@ public class OdometerHardware {
                 opMode.telemetry.update();
                 if (direction == FORWARD) {
                     leftFrontDrive.setPower(robotPower);
-                    rightFrontDrive.setPower(-robotPower);
+                    rightFrontDrive.setPower(robotPower);
                     leftBackDrive.setPower(robotPower);
-                    rightBackDrive.setPower(-robotPower);
+                    rightBackDrive.setPower(robotPower);
                 } else if (direction == BACKWARD) {
                     leftFrontDrive.setPower(-robotPower);
-                    rightFrontDrive.setPower(robotPower);
+                    rightFrontDrive.setPower(-robotPower);
                     leftBackDrive.setPower(-robotPower);
-                    rightBackDrive.setPower(robotPower);
+                    rightBackDrive.setPower(-robotPower);
                 } else if (direction == STRAFELEFT) {
                     leftFrontDrive.setPower(-robotPower * 0.75);
-                    rightFrontDrive.setPower(-robotPower * 0.75);
+                    rightFrontDrive.setPower(robotPower * 0.75);
                     leftBackDrive.setPower(robotPower * 0.75);
-                    rightBackDrive.setPower(robotPower * 0.8);
+                    rightBackDrive.setPower(-robotPower * 0.75);
                 } else if (direction == STRAFERIGHT) {
                     leftFrontDrive.setPower(robotPower * 0.75);
-                    rightFrontDrive.setPower(robotPower * 0.75);
+                    rightFrontDrive.setPower(-robotPower * 0.75);
                     leftBackDrive.setPower(-robotPower * 0.75);
-                    rightBackDrive.setPower(-robotPower * 0.8);
+                    rightBackDrive.setPower(robotPower * 0.75);
 
                 }
             }
