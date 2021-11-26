@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 import java.util.List;
 @Autonomous
-public class CaroselBlueAuto2 extends LinearOpMode {
+public class CaroselBlueAuto extends LinearOpMode {
     OdometerHardware robot = new OdometerHardware(this);
     @Override
 
