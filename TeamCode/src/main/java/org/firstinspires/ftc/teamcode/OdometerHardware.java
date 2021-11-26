@@ -46,7 +46,7 @@ public class OdometerHardware {
     public ElapsedTime     runtime = new ElapsedTime();
     public OdometerHardware (LinearOpMode opMode){
         this.opMode= opMode;}
-    DcMotor rightFrontDrive, rightBackDrive, leftFrontDrive, leftBackDrive;
+    DcMotor rightFrontDrive, rightBackDrive, leftFrontDrive, leftBackDrive, DuckyDropper, Intake, Slides;
     //Odometry Wheels
     DcMotor verticalLeft, verticalRight, horizontal;
 
@@ -250,6 +250,9 @@ public class OdometerHardware {
         rightBackDrive = opMode.hardwareMap.dcMotor.get(rbName);
         leftFrontDrive = opMode.hardwareMap.dcMotor.get(lfName);
         leftBackDrive = opMode.hardwareMap.dcMotor.get(lbName);
+        DuckyDropper = opMode.hardwareMap.dcMotor.get("ducky_dropper");
+        Slides = opMode.hardwareMap.dcMotor.get("slides");
+        Intake = opMode.hardwareMap.dcMotor.get("intake");
 
 
 
@@ -389,7 +392,7 @@ public class OdometerHardware {
 
             if (Math.abs(angleDifference) > 10) {
 
-                if ( angleDifference > 0) {
+                if ( angleDifference > 5) {
                     //turn right
                     leftFrontDrive.setPower(robotPower);
                     rightFrontDrive.setPower(-robotPower);
@@ -410,7 +413,7 @@ public class OdometerHardware {
                     opMode.telemetry.update();
 
                 }
-                else if (angleDifference< 0) {
+                else if (angleDifference< 5) {
                     leftFrontDrive.setPower(-robotPower);
                     rightFrontDrive.setPower(robotPower);
                     leftBackDrive.setPower(-robotPower);
