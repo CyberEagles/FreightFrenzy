@@ -478,4 +478,47 @@ public class OdometerHardware {
 
 
     }
+
+    public void drivedistance(double distance, double robotPower, double timeoutS, int direction){
+        double startXposition = globalPositionUpdate.returnXCoordinate()/COUNTS_PER_INCH;
+        double startYposition = globalPositionUpdate.returnYCoordinate()/COUNTS_PER_INCH;
+        double distancetraveled = 0;
+
+        if (direction == FORWARD) {
+            leftFrontDrive.setPower(robotPower);
+            rightFrontDrive.setPower(robotPower);
+            leftBackDrive.setPower(robotPower);
+            rightBackDrive.setPower(robotPower);
+        } else if (direction == BACKWARD) {
+            leftFrontDrive.setPower(-robotPower);
+            rightFrontDrive.setPower(-robotPower);
+            leftBackDrive.setPower(-robotPower);
+            rightBackDrive.setPower(-robotPower);
+        } else if (direction == STRAFELEFT) {
+            leftFrontDrive.setPower(-robotPower);
+            rightFrontDrive.setPower(robotPower);
+            leftBackDrive.setPower(robotPower);
+            rightBackDrive.setPower(-robotPower);
+        } else if (direction == STRAFERIGHT) {
+            leftFrontDrive.setPower(robotPower);
+            rightFrontDrive.setPower(-robotPower);
+            leftBackDrive.setPower(-robotPower);
+            rightBackDrive.setPower(robotPower);
+        }
+        while (opMode.opModeIsActive() && distancetraveled < distance && (runtime.seconds() < timeoutS)){
+            double currentXposition = globalPositionUpdate.returnXCoordinate()/COUNTS_PER_INCH;
+            double currentYposition = globalPositionUpdate.returnYCoordinate()/COUNTS_PER_INCH;
+            double Xdifference = Math.abs(startXposition-currentXposition);
+            double Ydifference = Math.abs(startYposition-currentYposition);
+            distancetraveled = Math.sqrt(Xdifference*Xdifference+Ydifference*Ydifference);
+            opMode.telemetry.addData("Distance Traveled", distancetraveled);
+            opMode.telemetry.addData("X position", currentXposition);
+            opMode.telemetry.addData("Y position", currentYposition);
+            opMode.telemetry.update();
+        }
+        leftFrontDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+        leftBackDrive.setPower(0);
+        rightBackDrive.setPower(0);
+    }
 }
