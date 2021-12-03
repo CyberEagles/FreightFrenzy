@@ -50,6 +50,7 @@ public class OdometerHardware {
     //Odometry Wheels
     DcMotor verticalLeft, verticalRight, horizontal;
 
+    Servo cargo = null;
 
 
     final double COUNTS_PER_INCH = 307.699557;
@@ -254,7 +255,7 @@ public class OdometerHardware {
         Slides = opMode.hardwareMap.dcMotor.get("slides");
         Intake = opMode.hardwareMap.dcMotor.get("intake");
 
-
+        cargo = opMode.hardwareMap.servo.get("cargo");
 
 
 
@@ -267,6 +268,8 @@ public class OdometerHardware {
         rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        Slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
         rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -394,10 +397,10 @@ public class OdometerHardware {
 
                 if ( angleDifference > 5) {
                     //turn right
-                    leftFrontDrive.setPower(robotPower);
-                    rightFrontDrive.setPower(-robotPower);
-                    leftBackDrive.setPower(robotPower);
-                    rightBackDrive.setPower(-robotPower);
+                    leftFrontDrive.setPower(robotPower*0.5);
+                    rightFrontDrive.setPower(-robotPower*0.5);
+                    leftBackDrive.setPower(robotPower*0.5);
+                    rightBackDrive.setPower(-robotPower*0.5);
 
                     opMode.telemetry.addData("Turning right", "now");
                     opMode.telemetry.addData("X Position (inches)", globalPositionUpdate.returnXCoordinate() / COUNTS_PER_INCH);
@@ -414,10 +417,10 @@ public class OdometerHardware {
 
                 }
                 else if (angleDifference< 5) {
-                    leftFrontDrive.setPower(-robotPower);
-                    rightFrontDrive.setPower(robotPower);
-                    leftBackDrive.setPower(-robotPower);
-                    rightBackDrive.setPower(robotPower);
+                    leftFrontDrive.setPower(-robotPower*0.5);
+                    rightFrontDrive.setPower(robotPower*0.5);
+                    leftBackDrive.setPower(-robotPower*0.5);
+                    rightBackDrive.setPower(robotPower*0.5);
 
 
                     opMode. telemetry.addData("Turning left", "now");
