@@ -21,11 +21,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.Camera;
-
-
-
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
@@ -50,8 +51,11 @@ public class OdometerHardware {
     //Odometry Wheels
     DcMotor verticalLeft, verticalRight, horizontal;
 
+    public RevBlinkinLedDriver lights = null;
+
     Servo cargo = null;
 
+    public ExposureControl myExposureControl;
 
     final double COUNTS_PER_INCH = 307.699557;
     final int FORWARD = 1;
@@ -130,14 +134,16 @@ public class OdometerHardware {
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
-
+        myExposureControl = vuforia.getCamera().getControl(ExposureControl.class);
+        myExposureControl.setMode(ExposureControl.Mode.Manual);
+        myExposureControl.setExposure(25, TimeUnit.MILLISECONDS);
         // Loading trackables is not necessary for the TensorFlow Object Detection engine.
     }
     public void initTfod() {
         int tfodMonitorViewId = opMode.hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", opMode.hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minResultConfidence = 0.85f;
+        tfodParameters.minResultConfidence = 0.6f;
         tfodParameters.isModelTensorFlow2 = true;
         tfodParameters.inputSize = 1080;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
@@ -257,7 +263,7 @@ public class OdometerHardware {
 
         cargo = opMode.hardwareMap.servo.get("cargo");
 
-
+        lights = opMode.hardwareMap.get(RevBlinkinLedDriver.class, "lights");
 
 
         verticalLeft = opMode.hardwareMap.dcMotor.get(vlEncoderName);
