@@ -11,11 +11,12 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous(name="Skystone Detecotor", group="Auto")
-public class SkystoneAutoMode extends LinearOpMode {
+public class opencvTestPart2 extends LinearOpMode {
     OpenCvCamera camera;
-    WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
+
     @Override
     public void runOpMode() throws InterruptedException {
+        WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         int cameraMonitorViewId = hardwareMap.appContext
                 .getResources().getIdentifier("cameraMonitorViewId",
                         "id", hardwareMap.appContext.getPackageName());
