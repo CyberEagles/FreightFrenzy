@@ -66,7 +66,7 @@ public class OdometerHardware {
 
     //Hardware Map Names for drive motors and odometry wheels. THIS WILL CHANGE ON EACH ROBOT, YOU NEED TO UPDATE THESE VALUES ACCORDINGLY
     String rfName = "right_front", rbName = "right_back", lfName = "left_front", lbName = "left_back";
-    String verticalLeftEncoderName = lbName, verticalRightEncoderName = rbName, horizontalEncoderName = rfName;
+    String verticalLeftEncoderName = lfName, verticalRightEncoderName = rbName, horizontalEncoderName = rfName;
 
     OdometryGlobalCoordinatePosition globalPositionUpdate;
 
@@ -251,7 +251,7 @@ public class OdometerHardware {
 
     public void initDriveHardwareMap(){
         String rfName = "right_front", rbName = "right_back", lfName = "left_front", lbName = "left_back";
-        String vlEncoderName = lbName, vrEncoderName = rbName, hEncoderName = rfName;
+        String vlEncoderName = lfName, vrEncoderName = rbName, hEncoderName = rfName;
 
         rightFrontDrive = opMode.hardwareMap.dcMotor.get(rfName);
         rightBackDrive = opMode.hardwareMap.dcMotor.get(rbName);

@@ -27,9 +27,9 @@ public class NewBlueAuto extends LinearOpMode {
         sleep(2000);
         robot.DuckyDropper.setPower(0);
         robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.CP1_HEARTBEAT_SLOW);
-        robot.Slides.setTargetPosition(1800);
+        robot.Slides.setTargetPosition(-2000);
         robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.Slides.setPower(1.0);
+        robot.Slides.setPower(-1.0);
         robot.goToPosition(-30, -10,0.5,50,1.0,5, robot.BACKWARD);
         robot.turn(0.2,30,3,5);
         robot.drivedistance(1.5,0.2,5, robot.BACKWARD);
@@ -39,7 +39,7 @@ public class NewBlueAuto extends LinearOpMode {
         robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BEATS_PER_MINUTE_PARTY_PALETTE);
         robot.drivedistance(10,0.5,5, robot.FORWARD);
         robot.Slides.setTargetPosition(0);
-        robot.Slides.setPower(-1);
+        robot.Slides.setPower(1);
         robot.turn(0.2,180,3,5);
         robot.goToPosition(-1,robot.globalPositionUpdate.returnYCoordinate()/robot.COUNTS_PER_INCH,0.5,180,1.0,5,robot.STRAFELEFT);
         robot.turn(0.2,175,3,5);

@@ -77,6 +77,7 @@ public class DrivingSuperDuck extends OpMode
         DuckyDropper.setDirection(DcMotorSimple.Direction.FORWARD);
         linearSlides.setDirection(DcMotorSimple.Direction.FORWARD);
         intake.setDirection(DcMotorSimple.Direction.FORWARD);
+        cap.setDirection(CRServo.Direction.FORWARD);
 
 
 
@@ -115,6 +116,7 @@ public class DrivingSuperDuck extends OpMode
         double duckyDropPower;
         double linearSlidePower;
         double intakePower;
+        double capPower;
         //power variables to be modified and set the motor powers to.
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.ORANGE);
 //Drive, turning, and strafe//
@@ -130,6 +132,7 @@ public class DrivingSuperDuck extends OpMode
         leftBackPower = Range.clip(drive + turn - strafe, -1, 1);
         rightBackPower = Range.clip(drive - turn + strafe, -1, 1);
         intakePower = Range.clip(gamepad2.right_stick_y, -0.9,0.9);
+
 //        if (gamepad2.left_bumper){
 //            linearSlidePower = 0.5;
 //        }
@@ -155,7 +158,7 @@ public class DrivingSuperDuck extends OpMode
         else if (gamepad2.dpad_down){
             lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.DARK_GREEN);
             linearSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            linearSlides.setTargetPosition(-500);
+            linearSlides.setTargetPosition(-600);
 
 
             if (linearSlides.getCurrentPosition()<-500){
@@ -196,6 +199,12 @@ public class DrivingSuperDuck extends OpMode
         }
 
 
+        if (gamepad2.left_stick_button){
+            capPower = 5;
+        }
+        else {
+            capPower = 1;
+        }
         if (gamepad2.x){
             cargoBox.setPosition(0);
         }
@@ -203,14 +212,15 @@ public class DrivingSuperDuck extends OpMode
             cargoBox.setPosition(1);
         }
         if (gamepad2.b){
-            cap.setPower(0.5);
+            cap.setPower(0.2 * capPower);
         }
         else if (gamepad2.y){
-            cap.setPower(-0.5);
+            cap.setPower(-0.2 * capPower);
         }
         else {
             cap.setPower(0);
         }
+
 
         if (gamepad2.a){
             lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);

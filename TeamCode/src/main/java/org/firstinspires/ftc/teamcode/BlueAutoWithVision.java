@@ -140,8 +140,6 @@ public class BlueAutoWithVision extends LinearOpMode {
             robot.drivedistance(70, 0.5, 5, robot.FORWARD);
         }
         else if (duckPosition == 1){
-            telemetry.addData("middle position", "Error 404 Auto Not Found");
-            telemetry.update();
             robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
             robot.DuckyDropper.setPower(0.6);
             robot.goToPosition(-7.5, 0, 0.3, 0, 0.5, 5, robot.STRAFELEFT);
