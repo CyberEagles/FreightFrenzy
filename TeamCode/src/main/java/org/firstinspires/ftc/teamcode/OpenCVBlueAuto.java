@@ -47,7 +47,7 @@ public class OpenCVBlueAuto extends LinearOpMode {
                 telemetry.addData("Left side","proceed");
                 telemetry.update();
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.LIME);
-                robot.DuckyDropper.setPower(0.6);
+                robot.DuckyDropper.setPower(0.5);
                 robot.goToPosition(-7.5, 0, 0.3, 0, 0.5, 5, robot.STRAFELEFT);
                 telemetry.addData("Turning soon", robot.globalPositionUpdate.returnOrientation());
                 robot.turn(0.2, 0, 3, 5);
@@ -82,7 +82,7 @@ public class OpenCVBlueAuto extends LinearOpMode {
                 telemetry.addData("Middle","proceed");
                 telemetry.update();
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK);
-                robot.DuckyDropper.setPower(0.6);
+                robot.DuckyDropper.setPower(0.5);
                 robot.goToPosition(-7.5, 0, 0.3, 0, 0.5, 5, robot.STRAFELEFT);
                 telemetry.addData("Turning soon", robot.globalPositionUpdate.returnOrientation());
                 robot.turn(0.2, 0, 3, 5);
@@ -97,8 +97,8 @@ public class OpenCVBlueAuto extends LinearOpMode {
                 robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.Slides.setPower(-1.0);
                 robot.goToPosition(-30, -10, 0.5, 50, 1.0, 5, robot.BACKWARD);
-                robot.turn(0.2, 30, 3, 5);
-                robot.drivedistance(0.5, 0.2, 5, robot.BACKWARD);
+                robot.turn(0.2, 35, 2, 5);
+                robot.drivedistance(1, 0.2, 5, robot.BACKWARD);
                 robot.cargo.setPosition(0.5);
                 sleep(1000);
                 robot.cargo.setPosition(1);
@@ -113,7 +113,7 @@ public class OpenCVBlueAuto extends LinearOpMode {
                 break;
             case MIDDLE:
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
-                robot.DuckyDropper.setPower(0.6);
+                robot.DuckyDropper.setPower(0.5);
                 robot.goToPosition(-7.5, 0, 0.3, 0, 0.5, 5, robot.STRAFELEFT);
                 telemetry.addData("Turning soon", robot.globalPositionUpdate.returnOrientation());
                 robot.turn(0.2, 0, 3, 5);
