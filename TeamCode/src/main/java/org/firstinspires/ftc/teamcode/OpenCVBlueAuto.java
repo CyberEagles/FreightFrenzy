@@ -126,7 +126,7 @@ public class OpenCVBlueAuto extends LinearOpMode {
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.CP1_HEARTBEAT_SLOW);
                 robot.Slides.setTargetPosition(-1200);
                 robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.Slides.setPower(-1.0);
+                robot.Slides. setPower(-1.0);
                 robot.drivedistance(10,0.5,5,robot.BACKWARD);
                 robot.goToPosition(-25, -15, 0.5, 50, 1.0, 5, robot.BACKWARD);
                 robot.turn(0.2, 50, 3, 5);
@@ -141,7 +141,13 @@ public class OpenCVBlueAuto extends LinearOpMode {
                 robot.turn(0.2, 180, 3, 5);
                 robot.goToPosition(-1, robot.globalPositionUpdate.returnYCoordinate() / robot.COUNTS_PER_INCH, 0.5, 180, 1.0, 5, robot.STRAFELEFT);
                 robot.turn(0.2, 170, 3, 5);
+                robot.Intake.setPower(0.9);
                 robot.drivedistance(65 , 0.5, 5, robot.FORWARD);
+                robot.turn(0.2,190,3,5);
+                robot.drivedistance(15,0.2,5,robot.FORWARD);
+                robot.Intake.setPower(-0.9);
+                robot.turn(0.2,190,3,5);
+                robot.drivedistance(45,0.5,5,robot.BACKWARD);
                 break;
             case NOT_FOUND:
                 telemetry.addData("Not Found", "proceed");

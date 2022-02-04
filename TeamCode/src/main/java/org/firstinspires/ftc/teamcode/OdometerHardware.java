@@ -284,6 +284,7 @@ public class OdometerHardware {
         leftBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
+
         verticalLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         verticalRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         horizontal.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
