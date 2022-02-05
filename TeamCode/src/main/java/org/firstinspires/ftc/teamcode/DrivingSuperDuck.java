@@ -28,7 +28,7 @@ public class DrivingSuperDuck extends OpMode
     private DcMotor linearSlides = null;
     private DcMotor intake = null;
     private Servo cargoBox = null;
-    private CRServo cap = null;
+    private Servo cap = null;
     private RevBlinkinLedDriver lights = null;
 
 
@@ -50,7 +50,7 @@ public class DrivingSuperDuck extends OpMode
         linearSlides = hardwareMap.get(DcMotor.class, "slides");
         intake = hardwareMap.get(DcMotor.class, "intake");
         cargoBox = hardwareMap.get(Servo.class, "cargo");
-        cap = hardwareMap.get(CRServo.class,"cap");
+        cap = hardwareMap.get(Servo.class,"cap");
         lights = hardwareMap.get(RevBlinkinLedDriver.class, "lights");
 
 
@@ -77,7 +77,6 @@ public class DrivingSuperDuck extends OpMode
         DuckyDropper.setDirection(DcMotorSimple.Direction.FORWARD);
         linearSlides.setDirection(DcMotorSimple.Direction.FORWARD);
         intake.setDirection(DcMotorSimple.Direction.FORWARD);
-        cap.setDirection(CRServo.Direction.FORWARD);
 
 
 
@@ -212,13 +211,13 @@ public class DrivingSuperDuck extends OpMode
             cargoBox.setPosition(1);
         }
         if (gamepad2.b){
-            cap.setPower(0.2 * capPower);
+            cap.setPosition(1);
         }
         else if (gamepad2.y){
-            cap.setPower(-0.2 * capPower);
+            cap.setPosition(0);
         }
         else {
-            cap.setPower(0);
+            cap.setPosition(-1);
         }
 
 
