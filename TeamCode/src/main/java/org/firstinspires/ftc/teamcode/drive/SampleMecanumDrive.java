@@ -19,11 +19,13 @@ import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryAcceleration
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
@@ -53,8 +55,8 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
  */
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(8, 0, 0);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(8, 0, 0);
 
     public static double LATERAL_MULTIPLIER = 1.0;
 
@@ -70,6 +72,10 @@ public class SampleMecanumDrive extends MecanumDrive {
     private TrajectoryFollower follower;
 
     private DcMotorEx leftFront, leftRear, rightRear, rightFront;
+    public DcMotorEx DuckyDropper, Intake, Slides;
+    public RevBlinkinLedDriver lights = null;
+
+    Servo cargo = null;
     private List<DcMotorEx> motors;
 
     private BNO055IMU imu;
@@ -103,6 +109,13 @@ public class SampleMecanumDrive extends MecanumDrive {
         leftRear = hardwareMap.get(DcMotorEx.class, "left_back");
         rightRear = hardwareMap.get(DcMotorEx.class, "right_back");
         rightFront = hardwareMap.get(DcMotorEx.class, "right_front");
+        DuckyDropper = hardwareMap.get(DcMotorEx.class, "ducky_dropper");
+        Slides = hardwareMap.get(DcMotorEx.class,"slides");
+        Intake = hardwareMap.get(DcMotorEx.class,"intake");
+
+        cargo = hardwareMap.servo.get("cargo");
+
+        lights = hardwareMap.get(RevBlinkinLedDriver.class, "lights");
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 

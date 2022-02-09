@@ -116,6 +116,7 @@ public class DrivingSuperDuck extends OpMode
         double linearSlidePower;
         double intakePower;
         double capPower;
+        double triggerPos = gamepad1.right_trigger;
         //power variables to be modified and set the motor powers to.
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.ORANGE);
 //Drive, turning, and strafe//
@@ -211,14 +212,16 @@ public class DrivingSuperDuck extends OpMode
             cargoBox.setPosition(1);
         }
         if (gamepad2.b){
-            cap.setPosition(1);
+            cap.setPosition(0.5);
         }
         else if (gamepad2.y){
-            cap.setPosition(0);
+            cap.setPosition(1);
         }
         else {
-            cap.setPosition(-1);
+            cap.setPosition(0);
         }
+        if (triggerPos > 0)
+            cap.setPosition(0.5+(triggerPos/3));
 
 
         if (gamepad2.a){
