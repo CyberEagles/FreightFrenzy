@@ -16,11 +16,11 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous
 public class RoadrunnerBlueAuto extends LinearOpMode {
-    SampleMecanumDrive robot = new SampleMecanumDrive(hardwareMap);
     OpenCvCamera camera;
 
     @Override
     public void runOpMode() throws InterruptedException {
+        SampleMecanumDrive robot = new SampleMecanumDrive(hardwareMap);
         WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         int cameraMonitorViewId = hardwareMap.appContext
                 .getResources().getIdentifier("cameraMonitorViewId",
@@ -47,6 +47,7 @@ public class RoadrunnerBlueAuto extends LinearOpMode {
                 .build();
 
         waitForStart();
+        if(isStopRequested()) return;
         switch (detector.getLocation()) {
             case LEFT:
                 robot.followTrajectory(traj1);
