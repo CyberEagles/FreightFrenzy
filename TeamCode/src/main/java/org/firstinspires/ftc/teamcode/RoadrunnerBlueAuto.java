@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -45,12 +46,29 @@ public class RoadrunnerBlueAuto extends LinearOpMode {
         Trajectory traj1 = robot.trajectoryBuilder(new Pose2d())
                 .strafeTo(new Vector2d(-7.5, 15))
                 .build();
-
+        Trajectory leaveWall = robot.trajectoryBuilder(new Pose2d())
+                .strafeTo(new Vector2d(20,25))
+                .build();
+        Trajectory returnToWall = robot.trajectoryBuilder(leaveWall.end(),true)
+                .strafeTo(new Vector2d(0,0))
+                .build();
         waitForStart();
         if(isStopRequested()) return;
         switch (detector.getLocation()) {
             case LEFT:
-                robot.followTrajectory(traj1);
+                robot.followTrajectory(leaveWall);
+                robot.Slides.setTargetPosition(-500);
+                robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.Slides.setPower(-1.0);
+                robot.turn(Math.toRadians(-100));
+                robot.cargo.setPosition(0);
+                sleep(1000);
+                robot.cargo.setPosition(1);
+                robot.turn(Math.toRadians(-80));
+                robot.Slides.setTargetPosition(0);
+                robot.Slides.setPower(1.0);
+                sleep(1500);
+                robot.followTrajectory(returnToWall);
 //                telemetry.addData("Left side","proceed");
 //                telemetry.update();
 //                robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.LIME);
@@ -84,6 +102,19 @@ public class RoadrunnerBlueAuto extends LinearOpMode {
 //                robot.drivedistance(70, 0.5, 5, robot.FORWARD);
                 break;
             case RIGHT:
+                robot.followTrajectory(leaveWall);
+                robot.Slides.setTargetPosition(-2000);
+                robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.Slides.setPower(-1.0);
+                robot.turn(Math.toRadians(-95));
+                robot.cargo.setPosition(0);
+                sleep(1000);
+                robot.cargo.setPosition(1);
+                robot.turn(Math.toRadians(-90));
+                robot.Slides.setTargetPosition(0);
+                robot.Slides.setPower(1.0);
+                sleep(1500);
+                robot.followTrajectory(returnToWall);
 //                telemetry.addData("Right Side","proceed");
 //                telemetry.update();
 //                telemetry.addData("Middle","proceed");
@@ -119,6 +150,19 @@ public class RoadrunnerBlueAuto extends LinearOpMode {
 //                robot.drivedistance(75, 0.5, 5, robot.FORWARD);
                 break;
             case MIDDLE:
+                robot.followTrajectory(leaveWall);
+                robot.Slides.setTargetPosition(-1200);
+                robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.Slides. setPower(-1.0);
+                robot.turn(Math.toRadians(-95));
+                robot.cargo.setPosition(0);
+                sleep(1000);
+                robot.cargo.setPosition(1);
+                robot.turn(Math.toRadians(-90));
+                robot.Slides.setTargetPosition(0);
+                robot.Slides.setPower(1.0);
+                sleep(1500);
+                robot.followTrajectory(returnToWall);
 //                robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
 //                robot.DuckyDropper.setPower(0.5);
 //                robot.goToPosition(-7.5, 0, 0.3, 0, 0.5, 5, robot.STRAFELEFT);

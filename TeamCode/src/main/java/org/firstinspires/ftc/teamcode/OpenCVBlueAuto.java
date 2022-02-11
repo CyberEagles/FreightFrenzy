@@ -141,13 +141,8 @@ public class OpenCVBlueAuto extends LinearOpMode {
                 robot.turn(0.2, 180, 3, 5);
                 robot.goToPosition(-1, robot.globalPositionUpdate.returnYCoordinate() / robot.COUNTS_PER_INCH, 0.5, 180, 1.0, 5, robot.STRAFELEFT);
                 robot.turn(0.2, 170, 3, 5);
-                robot.Intake.setPower(0.9);
                 robot.drivedistance(65 , 0.5, 5, robot.FORWARD);
-                robot.turn(0.2,190,3,5);
-                robot.drivedistance(15,0.2,5,robot.FORWARD);
-                robot.Intake.setPower(-0.9);
-                robot.turn(0.2,190,3,5);
-                robot.drivedistance(45,0.5,5,robot.BACKWARD);
+
                 break;
             case NOT_FOUND:
                 telemetry.addData("Not Found", "proceed");
