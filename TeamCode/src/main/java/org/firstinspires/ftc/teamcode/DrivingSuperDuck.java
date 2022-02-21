@@ -5,10 +5,13 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @TeleOp
 public class DrivingSuperDuck extends OpMode
@@ -30,7 +33,7 @@ public class DrivingSuperDuck extends OpMode
     private Servo cargoBox = null;
     private Servo cap = null;
     private RevBlinkinLedDriver lights = null;
-
+    private DistanceSensor distance = null;
 
 
 
@@ -52,6 +55,7 @@ public class DrivingSuperDuck extends OpMode
         cargoBox = hardwareMap.get(Servo.class, "cargo");
         cap = hardwareMap.get(Servo.class,"cap");
         lights = hardwareMap.get(RevBlinkinLedDriver.class, "lights");
+        distance = hardwareMap.get(DistanceSensor.class, "distance");
 
 
         //Reset the Encoder
@@ -138,13 +142,21 @@ public class DrivingSuperDuck extends OpMode
 //        }
 //        else {
 //            linearSlidePower = Range.clip(gamepad2.left_stick_y, -0.5, 0.5);
+        telemetry.addData("Distance to object", distance.getDistance(DistanceUnit.CM));
+        telemetry.update();
+        if (distance.getDistance(DistanceUnit.CM)<5) {
+            telemetry.addData("Distance to object", distance.getDistance(DistanceUnit.CM));
+            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
+            telemetry.update();
+        }
+
 
 
         telemetry.addData("Position",linearSlides.getCurrentPosition());
         if (gamepad2.left_bumper){
             lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK);
             linearSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            linearSlides.setTargetPosition(-2000);
+            linearSlides.setTargetPosition(-2100);
             linearSlides.setPower(-1.0);
 
         }
@@ -155,7 +167,7 @@ public class DrivingSuperDuck extends OpMode
             linearSlides.setPower(1);
 
         }
-        else if (gamepad2.dpad_down){
+        else if (gamepad2.dpad_left){
             lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.DARK_GREEN);
             linearSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             linearSlides.setTargetPosition(-600);
@@ -168,7 +180,7 @@ public class DrivingSuperDuck extends OpMode
                 linearSlides.setPower(-1);
             }
         }
-        else if (gamepad2.dpad_up){
+        else if (gamepad2.dpad_right){
             linearSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             linearSlides.setTargetPosition(-1200);
             lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.LIME);
@@ -211,17 +223,22 @@ public class DrivingSuperDuck extends OpMode
         else {
             cargoBox.setPosition(1);
         }
-        if (gamepad2.b){
-            cap.setPosition(0.5);
+        if (gamepad2.dpad_up){
+            if (cap.getPosition() > 0.7){
+                cap.setPosition (cap.getPosition() - .005);
+            }
+        }
+        else if (gamepad2.dpad_down){
+            cap.setPosition (cap.getPosition() + .001);
         }
         else if (gamepad2.y){
             cap.setPosition(1);
         }
-        else {
+
+        else if (gamepad2.b) {
             cap.setPosition(0);
+
         }
-        if (triggerPos > 0)
-            cap.setPosition(0.5+(triggerPos/3));
 
 
         if (gamepad2.a){

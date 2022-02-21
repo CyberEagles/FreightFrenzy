@@ -75,7 +75,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     public DcMotorEx DuckyDropper, Intake, Slides;
     public RevBlinkinLedDriver lights = null;
 
-    Servo cargo = null;
+    public Servo cargo = null;
     private List<DcMotorEx> motors;
 
     private BNO055IMU imu;
