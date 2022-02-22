@@ -44,7 +44,7 @@ public class RedBlockOnly extends LinearOpMode {
                 robot.Slides.setTargetPosition(-500);
                 robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.Slides.setPower(-1.0);
-                robot.goToPosition(-48,0,0.3,0,1,5,robot.STRAFELEFT);
+                robot.goToPosition(-44,0,0.5,0,1,5,robot.STRAFELEFT);
                 robot.turn(0.2,0,2,5);
                 robot.drivedistance(1,0.2,5,robot.BACKWARD);
                 robot.cargo.setPosition(0.5);
@@ -57,12 +57,18 @@ public class RedBlockOnly extends LinearOpMode {
                 robot.Slides.setTargetPosition(-2000);
                 robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.Slides.setPower(-1.0);
-                robot.goToPosition(-48,0,0.3,0,1,5,robot.STRAFELEFT);
-                robot.turn(0.2,0,2,5);
-                robot.drivedistance(1,0.2,5,robot.BACKWARD);
+                robot.goToPosition(-22,0,0.5,0,1,5,robot.STRAFELEFT);
+                robot.turn(0.2,45,2,5);
+                robot.drivedistance(5,0.3,5,robot.BACKWARD);
                 robot.cargo.setPosition(0.5);
                 sleep(1000);
                 robot.cargo.setPosition(1);
+                robot.Slides.setTargetPosition(0);
+                robot.Slides.setPower(1.0);
+                robot.goToPosition(-1,0,0.5,0,1,5, robot.STRAFERIGHT);
+                robot.turn(0.2,10,3,5);
+                robot.drivedistance(25,0.5,5, robot.FORWARD);
+                robot.drivedistance(25,0.5,5, robot.STRAFELEFT);
                 break;
 
             case MIDDLE:
@@ -71,7 +77,7 @@ public class RedBlockOnly extends LinearOpMode {
                 robot.Slides.setTargetPosition(-1200);
                 robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.Slides.setPower(-1.0);
-                robot.goToPosition(-48,0,0.3,0,1,5,robot.STRAFELEFT);
+                robot.goToPosition(-44,0,0.5,0,1,5,robot.STRAFELEFT);
                 robot.turn(0.2,0,2,5);
                 robot.drivedistance(1,0.2,5,robot.BACKWARD);
                 robot.cargo.setPosition(0.5);
