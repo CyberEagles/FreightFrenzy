@@ -10,7 +10,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous
-public class RedBlockOnly extends LinearOpMode {
+public class RedDuckSide extends LinearOpMode {
     OpenCvCamera camera;
     OdometerHardware robot = new OdometerHardware(this);
     @Override
@@ -41,63 +41,60 @@ public class RedBlockOnly extends LinearOpMode {
             case LEFT:
                 telemetry.addData("Left side","proceed");
                 telemetry.update();
+                robot.DuckyDropper.setPower(-0.5);
+                robot.goToPosition(-6,0,0.5,0,1,5, robot.STRAFELEFT);
+                robot.turn(0.2,85,2,5);
+                robot.drivedistance(17,0.3,5, robot.STRAFERIGHT);
+                sleep(2000);
+                robot.DuckyDropper.setPower(0);
+                robot.goToPosition(-6,27,0.5,90,1,5, robot.STRAFELEFT);
                 robot.Slides.setTargetPosition(-500);
                 robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.Slides.setPower(-1.0);
-                robot.goToPosition(0,0,0,0,1,5, robot.FORWARD);
-                robot.drivedistance(15, 0.5, 5, robot.BACKWARD);
-                robot.goToPosition(-22,-15,0.5,0,1,5,robot.STRAFELEFT);
                 robot.turn(0.2,90,2,5);
-                robot.drivedistance(2,0.3,5,robot.BACKWARD);
+                robot.drivedistance(15,0.3,5, robot.BACKWARD);
                 robot.cargo.setPosition(0.5);
                 sleep(1000);
                 robot.cargo.setPosition(1);
-                robot.Slides.setTargetPosition(0);
-                robot.Slides.setPower(1.0);
-                robot.drivedistance(2,0.5,5, robot.FORWARD);
-                robot.goToPosition(-1,-15,0.5,0,1,5, robot.STRAFERIGHT);
-                robot.turn(0.2,15,2,5);
-                robot.drivedistance(45,0.5,5, robot.FORWARD);
-                robot.drivedistance(25,0.5,5, robot.STRAFELEFT);
                 break;
             case RIGHT:
                 telemetry.addData("Right Side","proceed");
                 telemetry.update();
+                robot.DuckyDropper.setPower(-0.5);
+                robot.goToPosition(-6,0,0.5,0,1,5, robot.STRAFELEFT);
+                robot.turn(0.2,85,2,5);
+                robot.drivedistance(17,0.3,5, robot.STRAFERIGHT);
+                sleep(2000);
+                robot.DuckyDropper.setPower(0);
+                robot.goToPosition(-6,27,0.5,90,1,5, robot.STRAFELEFT);
                 robot.Slides.setTargetPosition(-2000);
                 robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.Slides.setPower(-1.0);
-                robot.goToPosition(-22,0,0.5,0,1,5,robot.STRAFELEFT);
-                robot.turn(0.2,45,2,5);
-                robot.drivedistance(5,0.3,5,robot.BACKWARD);
+                robot.turn(0.2,90,2,5);
+                robot.drivedistance(15,0.3,5, robot.BACKWARD);
                 robot.cargo.setPosition(0.5);
                 sleep(1000);
                 robot.cargo.setPosition(1);
-                robot.Slides.setTargetPosition(0);
-                robot.Slides.setPower(1.0);
-                robot.goToPosition(-1,0,0.5,0,1,5, robot.STRAFERIGHT);
-                robot.turn(0.2,15,2,5);
-                robot.drivedistance(25,0.5,5, robot.FORWARD);
-                robot.drivedistance(25,0.5,5, robot.STRAFELEFT);
                 break;
 
             case MIDDLE:
                 telemetry.addData("Middle", "proceed");
                 telemetry.update();
+                robot.DuckyDropper.setPower(-0.5);
+                robot.goToPosition(-6,0,0.5,0,1,5, robot.STRAFELEFT);
+                robot.turn(0.2,85,2,5);
+                robot.drivedistance(17,0.3,5, robot.STRAFERIGHT);
+                sleep(2000);
+                robot.DuckyDropper.setPower(0);
+                robot.goToPosition(-6,27,0.5,90,1,5, robot.STRAFELEFT);
                 robot.Slides.setTargetPosition(-1200);
                 robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.Slides.setPower(-1.0);
-                robot.goToPosition(-22,0,0.5,0,1,5,robot.STRAFELEFT);
-                robot.turn(0.2,45,2,5);
-                robot.drivedistance(6.5,0.3,5,robot.BACKWARD);
+                robot.turn(0.2,90,2,5);
+                robot.drivedistance(15,0.3,5, robot.BACKWARD);
                 robot.cargo.setPosition(0.5);
                 sleep(1000);
                 robot.cargo.setPosition(1);
-                robot.Slides.setTargetPosition(0);
-                robot.Slides.setPower(1.0);
-                robot.goToPosition(-1,0,0.5,0,1,5, robot.STRAFERIGHT);
-                robot.turn(0.2,15,2,5);
-                robot.drivedistance(25,0.5,5, robot.FORWARD);
-                robot.drivedistance(25,0.5,5, robot.STRAFELEFT);
                 break;
 
             case NOT_FOUND:
