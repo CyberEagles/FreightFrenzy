@@ -14,7 +14,7 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @TeleOp
-public class DrivingSuperDuck extends OpMode
+public class DrivingDuckBlue extends OpMode
 {
     //Declare motors and variables//
 
@@ -122,7 +122,7 @@ public class DrivingSuperDuck extends OpMode
         double capPower;
         double triggerPos = gamepad1.right_trigger;
         //power variables to be modified and set the motor powers to.
-        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.ORANGE);
+        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
 //Drive, turning, and strafe//
         double drive = -gamepad1.left_stick_y;
         double strafe = gamepad1.left_stick_x;
@@ -144,7 +144,7 @@ public class DrivingSuperDuck extends OpMode
 //            linearSlidePower = Range.clip(gamepad2.left_stick_y, -0.5, 0.5);
         telemetry.addData("Distance to object", distance.getDistance(DistanceUnit.CM));
         telemetry.update();
-        if (distance.getDistance(DistanceUnit.CM)<5) {
+        if (distance.getDistance(DistanceUnit.CM)<7) {
             telemetry.addData("Distance to object", distance.getDistance(DistanceUnit.CM));
             lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
             telemetry.update();

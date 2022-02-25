@@ -56,6 +56,14 @@ public class RedDuckSide extends LinearOpMode {
                 robot.cargo.setPosition(0.5);
                 sleep(1000);
                 robot.cargo.setPosition(1);
+                robot.drivedistance(3,0.5,5, robot.FORWARD);
+                robot.cargo.setPosition(1);
+                robot.Slides.setTargetPosition(0);
+                robot.Slides.setPower(1.0);
+                robot.turn(0.2,0,2 ,5);
+                robot.goToPosition(-1,27,0.5,0,1,5, robot.STRAFERIGHT);
+                robot.turn(0.2,15,2,5);
+                robot.drivedistance(50,0.5,5,robot.FORWARD);
                 break;
             case RIGHT:
                 telemetry.addData("Right Side","proceed");
@@ -75,6 +83,14 @@ public class RedDuckSide extends LinearOpMode {
                 robot.cargo.setPosition(0.5);
                 sleep(1000);
                 robot.cargo.setPosition(1);
+                robot.drivedistance(3,0.5,5, robot.FORWARD);
+                robot.cargo.setPosition(1);
+                robot.Slides.setTargetPosition(0);
+                robot.Slides.setPower(1.0);
+                robot.turn(0.2,0,2 ,5);
+                robot.goToPosition(-1,27,0.5,0,1,5, robot.STRAFERIGHT);
+                robot.turn(0.2,15,2,5);
+                robot.drivedistance(50,0.5,5,robot.FORWARD);
                 break;
 
             case MIDDLE:
@@ -95,6 +111,14 @@ public class RedDuckSide extends LinearOpMode {
                 robot.cargo.setPosition(0.5);
                 sleep(1000);
                 robot.cargo.setPosition(1);
+                robot.drivedistance(3,0.5,5, robot.FORWARD);
+                robot.cargo.setPosition(1);
+                robot.Slides.setTargetPosition(0);
+                robot.Slides.setPower(1.0);
+                robot.turn(0.2,0,2 ,5);
+                robot.goToPosition(-1,27,0.5,0,1,5, robot.STRAFERIGHT);
+                robot.turn(0.2,15,2,5);
+                robot.drivedistance(50,0.5,5,robot.FORWARD);
                 break;
 
             case NOT_FOUND:
