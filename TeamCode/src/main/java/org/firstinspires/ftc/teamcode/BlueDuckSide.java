@@ -13,7 +13,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous
-public class OpenCVBlueAuto extends LinearOpMode {
+public class BlueDuckSide extends LinearOpMode {
     OdometerHardware robot = new OdometerHardware(this);
     OpenCvCamera camera;
 
@@ -47,6 +47,7 @@ public class OpenCVBlueAuto extends LinearOpMode {
                 telemetry.addData("Left side","proceed");
                 telemetry.update();
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK);
+                sleep(4000);
                 robot.DuckyDropper.setPower(0.5);
                 robot.goToPosition(-7.5, 0, 0.3, 0, 0.5, 5, robot.STRAFELEFT);
                 telemetry.addData("Turning soon", robot.globalPositionUpdate.returnOrientation());
@@ -64,7 +65,7 @@ public class OpenCVBlueAuto extends LinearOpMode {
                 robot.goToPosition(-7.5, -24, 0.5, 50, 1.0, 5, robot.BACKWARD);
                 robot.turn(0.2, 87, 2, 5);
                 robot.drivedistance(16, 0.2, 5, robot.BACKWARD);
-                robot.cargo.setPosition(0.5);
+                robot.cargo.setPosition(0.25);
                 sleep(1000);
                 robot.cargo.setPosition(1);
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BEATS_PER_MINUTE_PARTY_PALETTE);
@@ -80,6 +81,7 @@ public class OpenCVBlueAuto extends LinearOpMode {
                 telemetry.addData("Right Side","proceed");
                 telemetry.update();
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.LIME);
+                sleep(4000);
                 robot.DuckyDropper.setPower(0.5);
                 robot.goToPosition(-7.5, 0, 0.3, 0, 0.5, 5, robot.STRAFELEFT);
                 telemetry.addData("Turning soon", robot.globalPositionUpdate.returnOrientation());
@@ -97,7 +99,7 @@ public class OpenCVBlueAuto extends LinearOpMode {
                 robot.goToPosition(-25, -15, 0.5, 50, 1.0, 5, robot.BACKWARD);
                 robot.turn(0.2, 50, 3, 5);
                 robot.drivedistance(1.7, 0.2, 5, robot.BACKWARD);
-                robot.cargo.setPosition(0.5);
+                robot.cargo.setPosition(0.25);
                 sleep(1000);
                 robot.cargo.setPosition(1);
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BEATS_PER_MINUTE_PARTY_PALETTE);
@@ -111,6 +113,7 @@ public class OpenCVBlueAuto extends LinearOpMode {
                 break;
             case MIDDLE:
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
+                sleep(4000);
                 robot.DuckyDropper.setPower(0.5);
                 robot.goToPosition(-7.5, 0, 0.3, 0, 0.5, 5, robot.STRAFELEFT);
                 telemetry.addData("Turning soon", robot.globalPositionUpdate.returnOrientation());
@@ -129,7 +132,7 @@ public class OpenCVBlueAuto extends LinearOpMode {
                 robot.goToPosition(-25, -15, 0.5, 50, 1.0, 5, robot.BACKWARD);
                 robot.turn(0.2, 50, 3, 5);
                 robot.drivedistance(1.7, 0.2, 5, robot.BACKWARD);
-                robot.cargo.setPosition(0);
+                robot.cargo.setPosition(0.25);
                 sleep(1000);
                 robot.cargo.setPosition(1);
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BEATS_PER_MINUTE_PARTY_PALETTE);
@@ -139,13 +142,7 @@ public class OpenCVBlueAuto extends LinearOpMode {
                 robot.turn(0.2, 180, 3, 5);
                 robot.goToPosition(-1, robot.globalPositionUpdate.returnYCoordinate() / robot.COUNTS_PER_INCH, 0.5, 180, 1.0, 5, robot.STRAFELEFT);
                 robot.turn(0.2, 170, 3, 5);
-                robot.Intake.setPower(0.9);
                 robot.drivedistance(65 , 0.5, 5, robot.FORWARD);
-                robot.turn(0.2,190,3,5);
-                robot.drivedistance(15,0.2,5,robot.FORWARD);
-                robot.Intake.setPower(-0.9);
-                robot.turn(0.2,190,3,5);
-                robot.drivedistance(45,0.5,5,robot.BACKWARD);
                 break;
             case NOT_FOUND:
                 telemetry.addData("Not Found", "proceed");

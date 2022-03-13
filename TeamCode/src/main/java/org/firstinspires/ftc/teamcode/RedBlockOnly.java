@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -8,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-
+@Disabled
 @Autonomous
 public class RedBlockOnly extends LinearOpMode {
     OpenCvCamera camera;
@@ -39,6 +41,7 @@ public class RedBlockOnly extends LinearOpMode {
         waitForStart();
         switch (detector.getLocation()) {
             case LEFT:
+                robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK);
                 telemetry.addData("Left side","proceed");
                 telemetry.update();
                 robot.Slides.setTargetPosition(-500);
@@ -49,7 +52,7 @@ public class RedBlockOnly extends LinearOpMode {
                 robot.goToPosition(-22,-15,0.5,0,1,5,robot.STRAFELEFT);
                 robot.turn(0.2,90,2,5);
                 robot.drivedistance(2,0.3,5,robot.BACKWARD);
-                robot.cargo.setPosition(0.5);
+                robot.cargo.setPosition(0.25);
                 sleep(1000);
                 robot.cargo.setPosition(1);
                 robot.Slides.setTargetPosition(0);
@@ -61,6 +64,7 @@ public class RedBlockOnly extends LinearOpMode {
                 robot.drivedistance(25,0.5,5, robot.STRAFELEFT);
                 break;
             case RIGHT:
+                robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.LIME);
                 telemetry.addData("Right Side","proceed");
                 telemetry.update();
                 robot.Slides.setTargetPosition(-2000);
@@ -69,7 +73,7 @@ public class RedBlockOnly extends LinearOpMode {
                 robot.goToPosition(-22,0,0.5,0,1,5,robot.STRAFELEFT);
                 robot.turn(0.2,45,2,5);
                 robot.drivedistance(5,0.3,5,robot.BACKWARD);
-                robot.cargo.setPosition(0.5);
+                robot.cargo.setPosition(0.25);
                 sleep(1000);
                 robot.cargo.setPosition(1);
                 robot.Slides.setTargetPosition(0);
@@ -81,6 +85,7 @@ public class RedBlockOnly extends LinearOpMode {
                 break;
 
             case MIDDLE:
+                robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
                 telemetry.addData("Middle", "proceed");
                 telemetry.update();
                 robot.Slides.setTargetPosition(-1200);
@@ -89,7 +94,7 @@ public class RedBlockOnly extends LinearOpMode {
                 robot.goToPosition(-22,0,0.5,0,1,5,robot.STRAFELEFT);
                 robot.turn(0.2,45,2,5);
                 robot.drivedistance(6.5,0.3,5,robot.BACKWARD);
-                robot.cargo.setPosition(0.5);
+                robot.cargo.setPosition(0.25);
                 sleep(1000);
                 robot.cargo.setPosition(1);
                 robot.Slides.setTargetPosition(0);

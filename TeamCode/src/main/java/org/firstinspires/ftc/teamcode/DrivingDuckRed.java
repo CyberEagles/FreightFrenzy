@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -10,7 +11,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
+@Disabled
 @TeleOp
 public class DrivingDuckRed extends OpMode
 {
@@ -222,9 +223,7 @@ public class DrivingDuckRed extends OpMode
             cargoBox.setPosition(1);
         }
         if (gamepad2.dpad_up){
-            if (cap.getPosition() > 0.7){
-                cap.setPosition (cap.getPosition() - .005);
-            }
+            cap.setPosition(0.7);
         }
         else if (gamepad2.dpad_down){
             cap.setPosition (cap.getPosition() + .001);

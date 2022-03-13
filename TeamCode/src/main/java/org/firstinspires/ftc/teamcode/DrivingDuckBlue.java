@@ -224,9 +224,7 @@ public class DrivingDuckBlue extends OpMode
             cargoBox.setPosition(1);
         }
         if (gamepad2.dpad_up){
-            if (cap.getPosition() > 0.7){
-                cap.setPosition (cap.getPosition() - .005);
-            }
+            cap.setPosition(0.7);
         }
         else if (gamepad2.dpad_down){
             cap.setPosition (cap.getPosition() + .001);
