@@ -14,7 +14,7 @@ public class CarouselBlueTest {
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(52, 52, Math.toRadians(248), Math.toRadians(60), 18)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
+                        drive.trajectorySequenceBuilder(new Pose2d(-41, 61, Math.toRadians(180)))
                                 .strafeTo(new Vector2d(-60, 53.5))
                                 .forward(6)
                                 .lineToSplineHeading(new Pose2d(-16, 53.5, Math.toRadians(90)))
@@ -24,7 +24,7 @@ public class CarouselBlueTest {
                                 .build()
                 );
 
-        meepMeep.setBackground(MeepMeep.Background.FIELD_FREIGHTFRENZY_ADI_DARK)
+        meepMeep.setBackground(MeepMeep.Background.FIELD_FREIGHTFRENZY_OFFICIAL)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
                 .addEntity(myBot)
