@@ -1,20 +1,18 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @TeleOp
-public class DrivingDuckBlue extends OpMode
+public class SecondRobot extends OpMode
 {
     //Declare motors and variables//
 
@@ -33,7 +31,7 @@ public class DrivingDuckBlue extends OpMode
     private Servo cargoBox = null;
     private Servo cap = null;
     private RevBlinkinLedDriver lights = null;
-//    private DistanceSensor distance = null;
+    private DistanceSensor distance = null;
 
 
 
@@ -55,7 +53,7 @@ public class DrivingDuckBlue extends OpMode
         cargoBox = hardwareMap.get(Servo.class, "cargo");
         cap = hardwareMap.get(Servo.class,"cap");
         lights = hardwareMap.get(RevBlinkinLedDriver.class, "lights");
-//        distance = hardwareMap.get(DistanceSensor.class, "distance");
+        distance = hardwareMap.get(DistanceSensor.class, "distance");
 
 
         //Reset the Encoder
@@ -142,48 +140,47 @@ public class DrivingDuckBlue extends OpMode
 //        }
 //        else {
 //            linearSlidePower = Range.clip(gamepad2.left_stick_y, -0.5, 0.5);
-//        telemetry.addData("Distance to object", distance.getDistance(DistanceUnit.CM));
-//        telemetry.update();
-//        if (distance.getDistance(DistanceUnit.CM)<7) {
-//            telemetry.addData("Distance to object", distance.getDistance(DistanceUnit.CM));
-//            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
-//            telemetry.update();
-//        }
+        telemetry.addData("Distance to object", distance.getDistance(DistanceUnit.CM));
+        telemetry.update();
+        if (distance.getDistance(DistanceUnit.CM)<7) {
+            telemetry.addData("Distance to object", distance.getDistance(DistanceUnit.CM));
+            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
+            telemetry.update();
+        }
 
 
 
         telemetry.addData("Position",linearSlides.getCurrentPosition());
         if (gamepad2.left_bumper){
             lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK);
-            linearSlides.setTargetPosition(-2100);
             linearSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            linearSlides.setTargetPosition(-2100);
             linearSlides.setPower(-1.0);
 
         }
         else if (gamepad2.right_bumper){
             lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE_VIOLET);
-            linearSlides.setTargetPosition(0);
             linearSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            linearSlides.setTargetPosition(0);
             linearSlides.setPower(1);
 
         }
         else if (gamepad2.dpad_left){
             lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.DARK_GREEN);
-            linearSlides.setTargetPosition(-600);
             linearSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            linearSlides.setTargetPosition(-600);
 
 
-
-            if (linearSlides.getCurrentPosition()<-600){
+            if (linearSlides.getCurrentPosition()<-500){
                 linearSlides.setPower(1.0);
             }
-            else if (linearSlides.getCurrentPosition()>-600){
+            else if (linearSlides.getCurrentPosition()>-500){
                 linearSlides.setPower(-1);
             }
         }
         else if (gamepad2.dpad_right){
-            linearSlides.setTargetPosition(-1200);
             linearSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            linearSlides.setTargetPosition(-1200);
             lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.LIME);
             if (linearSlides.getCurrentPosition()<-1200){
                 linearSlides.setPower(1.0);
