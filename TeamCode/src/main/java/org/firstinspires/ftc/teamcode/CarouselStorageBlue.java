@@ -16,7 +16,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous
-public class CarouselBlue extends LinearOpMode {
+public class CarouselStorageBlue extends LinearOpMode {
     OpenCvCamera camera;
 
     @Override
@@ -47,30 +47,27 @@ public class CarouselBlue extends LinearOpMode {
         robot.setPoseEstimate(startPose);
         TrajectorySequence Right = robot.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(() -> {
-                        robot.DuckyDropper.setPower(0.6);
-                    })
+                    robot.DuckyDropper.setPower(0.6);
+                })
                 .strafeTo(new Vector2d(-61, 53.5))
                 .waitSeconds(1.5)
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0);
-                    robot.lights.setPattern((RevBlinkinLedDriver.BlinkinPattern.CP1_HEARTBEAT_SLOW));
                     robot.Slides.setTargetPosition(-2000);
-                    robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(-1.0);
                 })
-                .splineToLinearHeading(new Pose2d(-18, 53.5, Math.toRadians(90)), Math.toRadians(0))
-                .back(13.5)
-                .addTemporalMarker(7, () -> {
+                .strafeTo(new Vector2d(-61, 24))
+                .splineToConstantHeading(new Vector2d(-30, 24), Math.toRadians(0))
+                .addTemporalMarker(7,() -> {
                     robot.cargo.setPosition(0);
                 })
                 .waitSeconds(1)
-                .addDisplacementMarker(() -> {
-                    robot.cargo.setPosition(1);
+                .addDisplacementMarker(()->{
                     robot.Slides.setTargetPosition(0);
                     robot.Slides.setPower(1);
+                    robot.cargo.setPosition(1);
                 })
-                .splineToLinearHeading(new Pose2d(0, 65, Math.toRadians(0)), Math.toRadians(0))
-                .splineTo(new Vector2d(35, 65), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-61, 40), Math.toRadians(0))
                 .build();
 
         TrajectorySequence Middle = robot.trajectorySequenceBuilder(startPose)
