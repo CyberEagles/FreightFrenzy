@@ -17,10 +17,10 @@ public class CarouselRedTest {
                         drive.trajectorySequenceBuilder(new Pose2d(-52, -61, Math.toRadians(0)))
                                 .lineToLinearHeading(new Pose2d(-62, -51, Math.toRadians(-90)))
                                 .strafeRight(5)
-                                .strafeLeft(55)
-                                .back(8)
-                                .lineToLinearHeading(new Pose2d(15, -61, Math.toRadians(0)))
-                                .forward(25)
+                                .splineToConstantHeading(new Vector2d(-16, -51), Math.toRadians(-90))
+                                .splineToConstantHeading(new Vector2d(-16, -43), Math.toRadians(-90))
+                                .splineToLinearHeading(new Pose2d(15, -61, Math.toRadians(0)), Math.toRadians(0))
+                                .splineTo(new Vector2d(40, -61), Math.toRadians(0))
                                 .build()
                 );
 

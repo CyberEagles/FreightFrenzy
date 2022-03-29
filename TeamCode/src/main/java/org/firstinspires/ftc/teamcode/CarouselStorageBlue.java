@@ -54,20 +54,21 @@ public class CarouselStorageBlue extends LinearOpMode {
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0);
                     robot.Slides.setTargetPosition(-2000);
+                    robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(-1.0);
                 })
                 .strafeTo(new Vector2d(-61, 24))
                 .splineToConstantHeading(new Vector2d(-30, 24), Math.toRadians(0))
-                .addTemporalMarker(7,() -> {
-                    robot.cargo.setPosition(0);
-                })
+                .build();
+
+        TrajectorySequence Park = robot.trajectorySequenceBuilder(Right.end())
                 .waitSeconds(1)
                 .addDisplacementMarker(()->{
                     robot.Slides.setTargetPosition(0);
                     robot.Slides.setPower(1);
                     robot.cargo.setPosition(1);
                 })
-                .splineToConstantHeading(new Vector2d(-61, 40), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-59, 40), Math.toRadians(0))
                 .build();
 
         TrajectorySequence Middle = robot.trajectorySequenceBuilder(startPose)
@@ -78,24 +79,12 @@ public class CarouselStorageBlue extends LinearOpMode {
                 .waitSeconds(1.5)
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0);
-                    robot.lights.setPattern((RevBlinkinLedDriver.BlinkinPattern.CP1_HEARTBEAT_SLOW));
                     robot.Slides.setTargetPosition(-1200);
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(-1.0);
                 })
-                .splineToLinearHeading(new Pose2d(-18, 53.5, Math.toRadians(90)), Math.toRadians(0))
-                .back(13.5)
-                .addTemporalMarker(7, () -> {
-                    robot.cargo.setPosition(0);
-                })
-                .waitSeconds(1)
-                .addDisplacementMarker(() -> {
-                    robot.cargo.setPosition(1);
-                    robot.Slides.setTargetPosition(0);
-                    robot.Slides.setPower(1);
-                })
-                .splineToLinearHeading(new Pose2d(0, 65, Math.toRadians(0)), Math.toRadians(0))
-                .splineTo(new Vector2d(35, 65), Math.toRadians(0))
+                .strafeTo(new Vector2d(-61, 24))
+                .splineToConstantHeading(new Vector2d(-28, 24), Math.toRadians(0))
                 .build();
 
         TrajectorySequence Left = robot.trajectorySequenceBuilder(startPose)
@@ -106,24 +95,12 @@ public class CarouselStorageBlue extends LinearOpMode {
                 .waitSeconds(1.5)
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0);
-                    robot.lights.setPattern((RevBlinkinLedDriver.BlinkinPattern.CP1_HEARTBEAT_SLOW));
-                    robot.Slides.setTargetPosition(-550);
+                    robot.Slides.setTargetPosition(-600);
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(-1.0);
                 })
-                .splineToLinearHeading(new Pose2d(-18, 53.5, Math.toRadians(90)), Math.toRadians(0))
-                .back(14.5)
-                .addTemporalMarker(7, () -> {
-                    robot.cargo.setPosition(0);
-                })
-                .waitSeconds(1)
-                .addDisplacementMarker(() -> {
-                    robot.cargo.setPosition(1);
-                    robot.Slides.setTargetPosition(0);
-                    robot.Slides.setPower(1);
-                })
-                .splineToLinearHeading(new Pose2d(0, 65, Math.toRadians(0)), Math.toRadians(0))
-                .splineTo(new Vector2d(35, 65), Math.toRadians(0))
+                .strafeTo(new Vector2d(-61, 24))
+                .splineToConstantHeading(new Vector2d(-28, 24), Math.toRadians(0))
                 .build();
 
 
@@ -135,6 +112,8 @@ public class CarouselStorageBlue extends LinearOpMode {
                 telemetry.update();
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.LIME);
                 robot.followTrajectorySequence(Left);
+                robot.cargo.setPosition(0);
+                robot.followTrajectorySequence(Park);
                 break;
 
             case RIGHT:
@@ -142,6 +121,8 @@ public class CarouselStorageBlue extends LinearOpMode {
                 telemetry.update();
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK);
                 robot.followTrajectorySequence(Right);
+                robot.cargo.setPosition(0);
+                robot.followTrajectorySequence(Park);
                 break;
 
             case MIDDLE:
@@ -149,13 +130,17 @@ public class CarouselStorageBlue extends LinearOpMode {
                 telemetry.update();
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
                 robot.followTrajectorySequence(Middle);
+                robot.cargo.setPosition(0);
+                robot.followTrajectorySequence(Park);
                 break;
 
             case NOT_FOUND:
                 telemetry.addData("Not Found","proceed");
                 telemetry.update();
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.LIME);
-                robot.followTrajectorySequence(Left);
+                robot.followTrajectorySequence(Right);
+                robot.cargo.setPosition(0);
+                robot.followTrajectorySequence(Park);
 
         }
         camera.stopStreaming();
