@@ -76,6 +76,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     public DcMotorEx DuckyDropper, Intake, Slides;
     public RevBlinkinLedDriver lights = null;
 
+    public Rev2mDistanceSensor distance = null;
 
     public Servo cargo = null;
     private List<DcMotorEx> motors;
@@ -132,6 +133,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         DuckyDropper = hardwareMap.get(DcMotorEx.class, "ducky_dropper");
         Slides = hardwareMap.get(DcMotorEx.class,"slides");
         Intake = hardwareMap.get(DcMotorEx.class,"intake");
+        distance = hardwareMap.get(Rev2mDistanceSensor.class, "distance");
 
         cargo = hardwareMap.servo.get("cargo");
 
