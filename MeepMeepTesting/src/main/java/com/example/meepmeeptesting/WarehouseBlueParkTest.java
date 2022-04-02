@@ -6,7 +6,7 @@ import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
-public class WarehouseBlueTest {
+public class WarehouseBlueParkTest {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
 
@@ -17,7 +17,9 @@ public class WarehouseBlueTest {
                         drive.trajectorySequenceBuilder(new Pose2d(9, 61, Math.toRadians(0)))
                                 .splineToLinearHeading(new Pose2d(0, 40, Math.toRadians(60)), Math.toRadians(0))
                                 .splineToLinearHeading(new Pose2d(9, 61, Math.toRadians(0)), Math.toRadians(0))
-                                .splineToConstantHeading(new Vector2d(48, 61), Math.toRadians(0))
+                                .splineTo(new Vector2d(40, 61), Math.toRadians(0))
+                                .splineToLinearHeading(new Pose2d(40, 38,Math.toRadians(90)), Math.toRadians(90))
+                                .strafeTo(new Vector2d(61, 38))
                                 .build()
                 );
 

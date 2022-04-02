@@ -33,7 +33,7 @@ public class DrivingDuckBlue extends OpMode
     private Servo cargoBox = null;
     private Servo cap = null;
     private RevBlinkinLedDriver lights = null;
-//    private DistanceSensor distance = null;
+    private DistanceSensor distance = null;
 
 
 
@@ -55,7 +55,7 @@ public class DrivingDuckBlue extends OpMode
         cargoBox = hardwareMap.get(Servo.class, "cargo");
         cap = hardwareMap.get(Servo.class,"cap");
         lights = hardwareMap.get(RevBlinkinLedDriver.class, "lights");
-//        distance = hardwareMap.get(DistanceSensor.class, "distance");
+        distance = hardwareMap.get(DistanceSensor.class, "distance");
 
 
         //Reset the Encoder
@@ -122,7 +122,6 @@ public class DrivingDuckBlue extends OpMode
         double capPower;
         double triggerPos = gamepad1.right_trigger;
         //power variables to be modified and set the motor powers to.
-        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.CP1_2_END_TO_END_BLEND);
 //Drive, turning, and strafe//
         double drive = -gamepad1.left_stick_y;
         double strafe = gamepad1.left_stick_x;
@@ -150,7 +149,12 @@ public class DrivingDuckBlue extends OpMode
 //            telemetry.update();
 //        }
 
-
+        if (distance.getDistance(DistanceUnit.CM) < 7){
+            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
+        }
+        else if (distance.getDistance(DistanceUnit.CM) >= 7){
+            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
+        }
 
         telemetry.addData("Position",linearSlides.getCurrentPosition());
         if (gamepad2.left_bumper){

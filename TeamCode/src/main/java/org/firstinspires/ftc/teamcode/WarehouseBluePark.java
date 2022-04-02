@@ -7,10 +7,8 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -18,7 +16,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous
-public class WarehouseBlue extends LinearOpMode {
+public class WarehouseBluePark extends LinearOpMode {
     OpenCvCamera camera;
 
     @Override
@@ -31,25 +29,24 @@ public class WarehouseBlue extends LinearOpMode {
         OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
         opencvTest detector = new opencvTest(telemetry);
         camera.setPipeline(detector);
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
             @Override
-            public void onOpened() {
-                camera.startStreaming(1920, 1080, OpenCvCameraRotation.UPRIGHT);
+            public void onOpened()
+            {
+                camera.startStreaming(1920,1080, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
-            public void onError(int errorCode) {
-            }
+            public void onError(int errorCode) {}
         });
-        telemetry.addData("Wait for the numbers", "Don't run yet");
+        telemetry.addData("Wait for the numbers","Don't run yet");
         telemetry.update();
-        ElapsedTime stopTimer = new ElapsedTime();
 
         Pose2d startPose = new Pose2d(9, 61, Math.toRadians(0));
         robot.setPoseEstimate(startPose);
-
         TrajectorySequence Right = robot.trajectorySequenceBuilder(startPose)
-                .addDisplacementMarker(()-> {
+                .addDisplacementMarker(()->{
                     robot.Slides.setTargetPosition(-2000);
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(-1);
@@ -57,106 +54,80 @@ public class WarehouseBlue extends LinearOpMode {
                 .splineToLinearHeading(new Pose2d(0, 40, Math.toRadians(60)), Math.toRadians(0))
                 .build();
 
-        TrajectorySequence Second = robot.trajectorySequenceBuilder(Right.end())
+        TrajectorySequence Park = robot.trajectorySequenceBuilder(Right.end())
                 .waitSeconds(1)
                 .addDisplacementMarker(()->{
                     robot.cargo.setPosition(1);
                     robot.Slides.setTargetPosition(0);
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(1);
-                    robot.Intake.setPower(0.9);
                 })
                 .splineToLinearHeading(new Pose2d(9, 61, Math.toRadians(0)), Math.toRadians(0))
-                .splineTo(new Vector2d(50, 61), Math.toRadians(0))
+                .splineTo(new Vector2d(40, 61), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(40, 38,Math.toRadians(90)), Math.toRadians(90))
+                .strafeTo(new Vector2d(63, 38))
                 .build();
-
 
         TrajectorySequence Middle = robot.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(()->{
                     robot.Slides.setTargetPosition(-1200);
-                    robot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(-1);
                 })
-                .lineToLinearHeading(new Pose2d(-8, 43, Math.toRadians(80)))
-                .addDisplacementMarker(()->{
-                    robot.Slides.setTargetPosition(0);
-                    robot.Slides.setPower(1);
-                })
-                .lineToLinearHeading(new Pose2d(0, 61, Math.toRadians(0)))
-                .forward(40)
-                .strafeRight(20)
+                .splineToLinearHeading(new Pose2d(0, 40, Math.toRadians(60)), Math.toRadians(0))
                 .build();
 
         TrajectorySequence Left = robot.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(()->{
-                    robot.Slides.setTargetPosition(-500);
-                    robot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.Slides.setTargetPosition(-600);
+                    robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(-1);
                 })
-                .lineToLinearHeading(new Pose2d(-8, 43, Math.toRadians(80)))
-                .addDisplacementMarker(()->{
-                    robot.Slides.setTargetPosition(0);
-                    robot.Slides.setPower(1);
-                })
-                .lineToLinearHeading(new Pose2d(0, 61, Math.toRadians(0)))
-                .forward(40)
-                .strafeRight(20)
+                .splineToLinearHeading(new Pose2d(0, 40, Math.toRadians(60)), Math.toRadians(0))
                 .build();
+
 
         waitForStart();
         if(isStopRequested()) return;
-
-
-//        switch (detector.getLocation()) {
-  //          case LEFT:
+        switch (detector.getLocation()) {
+            case LEFT:
                 telemetry.addData("Left side","proceed");
+                telemetry.update();
+                robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.LIME);
+                robot.followTrajectorySequence(Left);
+                robot.cargo.setPosition(0);
+                robot.followTrajectorySequence(Park);
+                break;
+
+            case RIGHT:
+                telemetry.addData("Right side","proceed");
+                telemetry.update();
+                robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK);
+                robot.followTrajectorySequence(Right);
+                robot.cargo.setPosition(0);
+                robot.followTrajectorySequence(Park);
+                break;
+
+            case MIDDLE:
+                telemetry.addData("Middle Position","proceed");
+                telemetry.update();
+                robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
+                robot.followTrajectorySequence(Middle);
+                robot.cargo.setPosition(0);
+                robot.followTrajectorySequence(Park);
+
+                break;
+
+            case NOT_FOUND:
+                telemetry.addData("Not Found","proceed");
                 telemetry.update();
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.LIME);
                 robot.followTrajectorySequence(Right);
                 robot.cargo.setPosition(0);
-                robot.followTrajectorySequenceAsync(Second);
-
-
-
-
-    //            break;
-
-//            case RIGHT:
-//                telemetry.addData("Right side","proceed");
-//                telemetry.update();
-//                robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK);
-//                robot.followTrajectorySequence(Right);
-//                break;
-//
-//            case MIDDLE:
-//                telemetry.addData("Middle Position","proceed");
-//                telemetry.update();
-//                robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
-//                robot.followTrajectorySequence(Middle);
-//                break;
-//
-//            case NOT_FOUND:
-//                telemetry.addData("Not Found","proceed");
-//                telemetry.update();
-//                robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.LIME);
-//                robot.followTrajectorySequence(Left);
-                 //   break;
-
-
-        while (opModeIsActive() && !isStopRequested()) {
-            telemetry.addData("Distance", robot.distance.getDistance(DistanceUnit.CM));
-            telemetry.update();
-            if (robot.distance.getDistance(DistanceUnit.CM)< 7 && stopTimer.seconds() > 10){
-                robot.breakFollowing();
-                robot.Intake.setPower(-1);
-                robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
-            }
-            robot.update();
-        }
-
+                robot.followTrajectorySequence(Park);
 
 
         }
-        //camera.stopStreaming();
-
+        camera.stopStreaming();
     }
+}
