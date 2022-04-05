@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.drive;
 
+import android.graphics.Paint;
+
 import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.config.Config;
@@ -79,6 +81,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     public Rev2mDistanceSensor distance = null;
 
     public Servo cargo = null;
+    public Servo capper = null;
     private List<DcMotorEx> motors;
 
     private BNO055IMU imu;
@@ -138,6 +141,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         distance = hardwareMap.get(Rev2mDistanceSensor.class, "distance");
 
         cargo = hardwareMap.servo.get("cargo");
+        capper = hardwareMap.servo.get("cap");
 
         lights = hardwareMap.get(RevBlinkinLedDriver.class, "lights");
 

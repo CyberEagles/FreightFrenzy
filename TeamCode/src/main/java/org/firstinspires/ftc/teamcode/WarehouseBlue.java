@@ -29,7 +29,7 @@ public class WarehouseBlue extends LinearOpMode {
                 .getResources().getIdentifier("cameraMonitorViewId",
                         "id", hardwareMap.appContext.getPackageName());
         OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
-        opencvTest detector = new opencvTest(telemetry);
+        SecondWebcamPipelineBlue detector = new SecondWebcamPipelineBlue(telemetry);
         camera.setPipeline(detector);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
@@ -54,10 +54,22 @@ public class WarehouseBlue extends LinearOpMode {
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(-1);
                 })
-                .splineToLinearHeading(new Pose2d(0, 40, Math.toRadians(60)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-2.5, 39, Math.toRadians(62)), Math.toRadians(0))
                 .build();
 
-        TrajectorySequence Second = robot.trajectorySequenceBuilder(Right.end())
+        TrajectorySequence Intake1 = robot.trajectorySequenceBuilder(Right.end())
+                .addDisplacementMarker(()->{
+                    robot.cargo.setPosition(1);
+                    robot.Slides.setTargetPosition(0);
+                    robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.Slides.setPower(1);
+                    robot.Intake.setPower(0.9);
+                })
+                .splineToLinearHeading(new Pose2d(9, 61, Math.toRadians(0)), Math.toRadians(0))
+                .splineTo(new Vector2d(45, 61), Math.toRadians(0))
+                .build();
+
+        TrajectorySequence Intake2 = robot.trajectorySequenceBuilder(Right.end())
                 .waitSeconds(1)
                 .addDisplacementMarker(()->{
                     robot.cargo.setPosition(1);
@@ -67,7 +79,18 @@ public class WarehouseBlue extends LinearOpMode {
                     robot.Intake.setPower(0.9);
                 })
                 .splineToLinearHeading(new Pose2d(9, 61, Math.toRadians(0)), Math.toRadians(0))
-                .splineTo(new Vector2d(50, 61), Math.toRadians(0))
+                .splineTo(new Vector2d(55, 61), Math.toRadians(0))
+                .build();
+
+        TrajectorySequence Blocks = robot.trajectorySequenceBuilder(Intake1.end())
+                .splineToConstantHeading(new Vector2d(9, 61), Math.toRadians(0))
+                .addDisplacementMarker(()-> {
+                    robot.Intake.setPower(0);
+                    robot.Slides.setTargetPosition(-2000);
+                    robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.Slides.setPower(-1);
+                })
+                .splineToLinearHeading(new Pose2d(-2.5, 39, Math.toRadians(62)), Math.toRadians(0))
                 .build();
 
 
@@ -111,10 +134,18 @@ public class WarehouseBlue extends LinearOpMode {
   //          case LEFT:
                 telemetry.addData("Left side","proceed");
                 telemetry.update();
+                robot.capper.setPosition(0.2);
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.LIME);
                 robot.followTrajectorySequence(Right);
                 robot.cargo.setPosition(0);
-                robot.followTrajectorySequenceAsync(Second);
+                sleep(1000);
+
+//                robot.followTrajectorySequence(Blocks);
+//                robot.cargo.setPosition(0);
+//                robot.followTrajectorySequenceAsync(Intake);
+//                robot.followTrajectorySequence(Blocks);
+//                robot.cargo.setPosition(0);
+
 
 
 
@@ -146,12 +177,32 @@ public class WarehouseBlue extends LinearOpMode {
         while (opModeIsActive() && !isStopRequested()) {
             telemetry.addData("Distance", robot.distance.getDistance(DistanceUnit.CM));
             telemetry.update();
-            if (robot.distance.getDistance(DistanceUnit.CM)< 7 && stopTimer.seconds() > 10){
-                robot.breakFollowing();
-                robot.Intake.setPower(-1);
-                robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
+            robot.followTrajectorySequenceAsync(Intake1);
+            while (opModeIsActive() && !isStopRequested()){
+                if (robot.distance.getDistance(DistanceUnit.CM)< 7 && stopTimer.seconds() > 10){
+                    robot.breakFollowing();
+                    robot.Intake.setPower(-1);
+                    robot.followTrajectorySequence(Blocks);
+                    robot.cargo.setPosition(0);
+                    sleep(1000);
+                    robot.cargo.setPosition(1);
+                    break;
+                }
+                robot.update();
             }
-            robot.update();
+            robot.followTrajectorySequenceAsync(Intake2);
+            while (opModeIsActive() && !isStopRequested()){
+                if (robot.distance.getDistance(DistanceUnit.CM)< 7 && stopTimer.seconds() > 10){
+                    robot.breakFollowing();
+                    robot.Intake.setPower(-1);
+                    robot.followTrajectorySequence(Blocks);
+                    robot.cargo.setPosition(0);
+                    sleep(1000);
+                    robot.cargo.setPosition(1);
+                    break;
+                }
+                robot.update();
+            }
         }
 
 
