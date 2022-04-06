@@ -121,7 +121,6 @@ public class DrivingDuckRed extends OpMode
         double capPower;
         double triggerPos = gamepad1.right_trigger;
         //power variables to be modified and set the motor powers to.
-        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
 //Drive, turning, and strafe//
         double drive = -gamepad1.left_stick_y;
         double strafe = gamepad1.left_stick_x;
@@ -146,6 +145,11 @@ public class DrivingDuckRed extends OpMode
         if (distance.getDistance(DistanceUnit.CM)<7) {
             telemetry.addData("Distance to object", distance.getDistance(DistanceUnit.CM));
             lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
+            telemetry.update();
+        }
+        else if (distance.getDistance(DistanceUnit.CM)>7){
+            telemetry.addData("Distance to object", distance.getDistance(DistanceUnit.CM));
+            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
             telemetry.update();
         }
 

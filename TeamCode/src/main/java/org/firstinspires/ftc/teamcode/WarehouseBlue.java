@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -54,7 +55,9 @@ public class WarehouseBlue extends LinearOpMode {
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(-1);
                 })
-                .splineToLinearHeading(new Pose2d(-2.5, 39, Math.toRadians(62)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-2.5, 39, Math.toRadians(70)), Math.toRadians(0),
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.8))
                 .build();
 
         TrajectorySequence Intake1 = robot.trajectorySequenceBuilder(Right.end())
@@ -65,8 +68,8 @@ public class WarehouseBlue extends LinearOpMode {
                     robot.Slides.setPower(1);
                     robot.Intake.setPower(0.9);
                 })
-                .splineToLinearHeading(new Pose2d(9, 61, Math.toRadians(0)), Math.toRadians(0))
-                .splineTo(new Vector2d(45, 61), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(9, 61.5, Math.toRadians(0)), Math.toRadians(0))
+                .splineTo(new Vector2d(47, 61.5), Math.toRadians(0))
                 .build();
 
         TrajectorySequence Intake2 = robot.trajectorySequenceBuilder(Right.end())
@@ -78,19 +81,21 @@ public class WarehouseBlue extends LinearOpMode {
                     robot.Slides.setPower(1);
                     robot.Intake.setPower(0.9);
                 })
-                .splineToLinearHeading(new Pose2d(9, 61, Math.toRadians(0)), Math.toRadians(0))
-                .splineTo(new Vector2d(55, 61), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(9, 62, Math.toRadians(0)), Math.toRadians(0))
+                .splineTo(new Vector2d(55, 61.5), Math.toRadians(0))
                 .build();
 
         TrajectorySequence Blocks = robot.trajectorySequenceBuilder(Intake1.end())
-                .splineToConstantHeading(new Vector2d(9, 61), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(9, 61.5), Math.toRadians(0))
                 .addDisplacementMarker(()-> {
                     robot.Intake.setPower(0);
                     robot.Slides.setTargetPosition(-2000);
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(-1);
                 })
-                .splineToLinearHeading(new Pose2d(-2.5, 39, Math.toRadians(62)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-2.5, 39, Math.toRadians(70)), Math.toRadians(0),
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.8))
                 .build();
 
 
@@ -105,7 +110,7 @@ public class WarehouseBlue extends LinearOpMode {
                     robot.Slides.setTargetPosition(0);
                     robot.Slides.setPower(1);
                 })
-                .lineToLinearHeading(new Pose2d(0, 61, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(0, 61.5, Math.toRadians(0)))
                 .forward(40)
                 .strafeRight(20)
                 .build();
@@ -142,7 +147,7 @@ public class WarehouseBlue extends LinearOpMode {
 
 //                robot.followTrajectorySequence(Blocks);
 //                robot.cargo.setPosition(0);
-//                robot.followTrajectorySequenceAsync(Intake);
+//                robot.followTrajectorySequenceAsync(Intake2);
 //                robot.followTrajectorySequence(Blocks);
 //                robot.cargo.setPosition(0);
 
@@ -203,8 +208,9 @@ public class WarehouseBlue extends LinearOpMode {
                 }
                 robot.update();
             }
+            break;
         }
-
+        robot.followTrajectorySequence(Intake2);
 
 
         }

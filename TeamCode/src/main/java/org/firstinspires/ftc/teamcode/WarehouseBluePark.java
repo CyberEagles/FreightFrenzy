@@ -22,7 +22,7 @@ public class WarehouseBluePark extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive robot = new SampleMecanumDrive(hardwareMap);
-        WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
+        WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 2");
         int cameraMonitorViewId = hardwareMap.appContext
                 .getResources().getIdentifier("cameraMonitorViewId",
                         "id", hardwareMap.appContext.getPackageName());

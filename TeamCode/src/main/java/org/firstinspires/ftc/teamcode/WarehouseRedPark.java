@@ -16,7 +16,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous
-public class CarouselBlue extends LinearOpMode {
+public class WarehouseRedPark extends LinearOpMode {
     OpenCvCamera camera;
 
     @Override
@@ -43,67 +43,47 @@ public class CarouselBlue extends LinearOpMode {
         telemetry.addData("Wait for the numbers","Don't run yet");
         telemetry.update();
 
-        Pose2d startPose = new Pose2d(-41, 61, Math.toRadians(180));
+        Pose2d startPose = new Pose2d(9, -61, Math.toRadians(0));
         robot.setPoseEstimate(startPose);
         TrajectorySequence Right = robot.trajectorySequenceBuilder(startPose)
-                .addDisplacementMarker(() -> {
-                        robot.DuckyDropper.setPower(0.6);
-                    })
-                .strafeTo(new Vector2d(-61, 53.5))
-                .waitSeconds(1.5)
-                .addDisplacementMarker(() -> {
-                    robot.DuckyDropper.setPower(0);
-                    robot.lights.setPattern((RevBlinkinLedDriver.BlinkinPattern.CP1_HEARTBEAT_SLOW));
+                .addDisplacementMarker(()->{
                     robot.Slides.setTargetPosition(-2000);
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.Slides.setPower(-1.0);
+                    robot.Slides.setPower(-1);
                 })
-                .splineToLinearHeading(new Pose2d(-18, 53.5, Math.toRadians(90)), Math.toRadians(0))
-                .back(13.5)
+                .splineToLinearHeading(new Pose2d(0, -40, Math.toRadians(-60)), Math.toRadians(0))
                 .build();
 
         TrajectorySequence Park = robot.trajectorySequenceBuilder(Right.end())
-                .addDisplacementMarker(() -> {
+                .waitSeconds(1)
+                .addDisplacementMarker(()->{
                     robot.cargo.setPosition(1);
                     robot.Slides.setTargetPosition(0);
+                    robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(1);
                 })
-                .splineToLinearHeading(new Pose2d(0, 65, Math.toRadians(0)), Math.toRadians(0))
-                .splineTo(new Vector2d(35, 65), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(9, -61, Math.toRadians(0)), Math.toRadians(0))
+                .splineTo(new Vector2d(40, -61), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(40, -38,Math.toRadians(-90)), Math.toRadians(90))
+                .strafeTo(new Vector2d(63, -38))
                 .build();
 
         TrajectorySequence Middle = robot.trajectorySequenceBuilder(startPose)
-                .addDisplacementMarker(() -> {
-                    robot.DuckyDropper.setPower(0.6);
-                })
-                .strafeTo(new Vector2d(-61, 53.5))
-                .waitSeconds(1.5)
-                .addDisplacementMarker(() -> {
-                    robot.DuckyDropper.setPower(0);
-                    robot.lights.setPattern((RevBlinkinLedDriver.BlinkinPattern.CP1_HEARTBEAT_SLOW));
+                .addDisplacementMarker(()->{
                     robot.Slides.setTargetPosition(-1200);
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.Slides.setPower(-1.0);
+                    robot.Slides.setPower(-1);
                 })
-                .splineToLinearHeading(new Pose2d(-18, 53.5, Math.toRadians(90)), Math.toRadians(0))
-                .back(13.5)
+                .splineToLinearHeading(new Pose2d(0, -40, Math.toRadians(-60)), Math.toRadians(0))
                 .build();
 
         TrajectorySequence Left = robot.trajectorySequenceBuilder(startPose)
-                .addDisplacementMarker(() -> {
-                    robot.DuckyDropper.setPower(0.6);
-                })
-                .strafeTo(new Vector2d(-61, 53.5))
-                .waitSeconds(1.5)
-                .addDisplacementMarker(() -> {
-                    robot.DuckyDropper.setPower(0);
-                    robot.lights.setPattern((RevBlinkinLedDriver.BlinkinPattern.CP1_HEARTBEAT_SLOW));
-                    robot.Slides.setTargetPosition(-550);
+                .addDisplacementMarker(()->{
+                    robot.Slides.setTargetPosition(-600);
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.Slides.setPower(-1.0);
+                    robot.Slides.setPower(-1);
                 })
-                .splineToLinearHeading(new Pose2d(-18, 53.5, Math.toRadians(90)), Math.toRadians(0))
-                .back(14.5)
+                .splineToLinearHeading(new Pose2d(0, -40, Math.toRadians(-60)), Math.toRadians(0))
                 .build();
 
 
@@ -116,7 +96,6 @@ public class CarouselBlue extends LinearOpMode {
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.LIME);
                 robot.followTrajectorySequence(Left);
                 robot.cargo.setPosition(0);
-                sleep(1000);
                 robot.followTrajectorySequence(Park);
                 break;
 
@@ -126,7 +105,6 @@ public class CarouselBlue extends LinearOpMode {
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK);
                 robot.followTrajectorySequence(Right);
                 robot.cargo.setPosition(0);
-                sleep(1000);
                 robot.followTrajectorySequence(Park);
                 break;
 
@@ -136,18 +114,18 @@ public class CarouselBlue extends LinearOpMode {
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
                 robot.followTrajectorySequence(Middle);
                 robot.cargo.setPosition(0);
-                sleep(1000);
                 robot.followTrajectorySequence(Park);
+
                 break;
 
             case NOT_FOUND:
                 telemetry.addData("Not Found","proceed");
                 telemetry.update();
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.LIME);
-                robot.followTrajectorySequence(Left);
+                robot.followTrajectorySequence(Right);
                 robot.cargo.setPosition(0);
-                sleep(1000);
                 robot.followTrajectorySequence(Park);
+
 
         }
         camera.stopStreaming();
