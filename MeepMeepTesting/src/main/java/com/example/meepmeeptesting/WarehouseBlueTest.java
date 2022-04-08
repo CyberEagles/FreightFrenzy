@@ -16,7 +16,7 @@ public class WarehouseBlueTest {
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(9, 61, Math.toRadians(0)))
                                 .splineToLinearHeading(new Pose2d(-2.5, 39, Math.toRadians(62)), Math.toRadians(0))
-                                .splineToLinearHeading(new Pose2d(9, 61, Math.toRadians(0)), Math.toRadians(0))
+                                .splineToSplineHeading(new Pose2d(9, 61, Math.toRadians(0)), Math.toRadians(0))
                                 .splineToConstantHeading(new Vector2d(48, 61), Math.toRadians(0))
                                 .build()
                 );
