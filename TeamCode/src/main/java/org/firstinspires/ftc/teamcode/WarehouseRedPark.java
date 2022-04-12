@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -27,7 +28,7 @@ public class WarehouseRedPark extends LinearOpMode {
                 .getResources().getIdentifier("cameraMonitorViewId",
                         "id", hardwareMap.appContext.getPackageName());
         OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
-        opencvTest detector = new opencvTest(telemetry);
+        opencvRed detector = new opencvRed(telemetry);
         camera.setPipeline(detector);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
@@ -51,10 +52,46 @@ public class WarehouseRedPark extends LinearOpMode {
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(-1);
                 })
-                .splineToLinearHeading(new Pose2d(0, -40, Math.toRadians(-60)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-2.5, -39, Math.toRadians(-70)), Math.toRadians(0),
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.8))
                 .build();
 
-        TrajectorySequence Park = robot.trajectorySequenceBuilder(Right.end())
+
+        TrajectorySequence Middle = robot.trajectorySequenceBuilder(startPose)
+                .addDisplacementMarker(()->{
+                    robot.Slides.setTargetPosition(-1200);
+                    robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.Slides.setPower(-1);
+                })
+                .splineToLinearHeading(new Pose2d(-3, -38.5, Math.toRadians(-70)), Math.toRadians(0),
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.8))
+                .build();
+
+        TrajectorySequence Left = robot.trajectorySequenceBuilder(startPose)
+                .addDisplacementMarker(()->{
+                    robot.Slides.setTargetPosition(-600);
+                    robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.Slides.setPower(-1);
+                })
+                .splineToLinearHeading(new Pose2d(-3.5, -37.5, Math.toRadians(-70)), Math.toRadians(0),
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.6, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.6))
+                .build();
+
+        waitForStart();
+        if(isStopRequested()) return;
+        Pose2d parkstartpose = Right.end();
+        switch (detector.getLocation()) {
+            case LEFT:
+                parkstartpose = Left.end();
+            case MIDDLE:
+                parkstartpose = Middle.end();
+            case RIGHT:
+                parkstartpose = Right.end();
+        }
+        TrajectorySequence Park = robot.trajectorySequenceBuilder(parkstartpose)
                 .waitSeconds(1)
                 .addDisplacementMarker(()->{
                     robot.cargo.setPosition(1);
@@ -64,31 +101,9 @@ public class WarehouseRedPark extends LinearOpMode {
                 })
                 .splineToLinearHeading(new Pose2d(9, -61, Math.toRadians(0)), Math.toRadians(0))
                 .splineTo(new Vector2d(40, -61), Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(40, -38,Math.toRadians(-90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(40, -38,Math.toRadians(90)), Math.toRadians(90))
                 .strafeTo(new Vector2d(63, -38))
                 .build();
-
-        TrajectorySequence Middle = robot.trajectorySequenceBuilder(startPose)
-                .addDisplacementMarker(()->{
-                    robot.Slides.setTargetPosition(-1200);
-                    robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.Slides.setPower(-1);
-                })
-                .splineToLinearHeading(new Pose2d(0, -40, Math.toRadians(-60)), Math.toRadians(0))
-                .build();
-
-        TrajectorySequence Left = robot.trajectorySequenceBuilder(startPose)
-                .addDisplacementMarker(()->{
-                    robot.Slides.setTargetPosition(-600);
-                    robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.Slides.setPower(-1);
-                })
-                .splineToLinearHeading(new Pose2d(0, -40, Math.toRadians(-60)), Math.toRadians(0))
-                .build();
-
-
-        waitForStart();
-        if(isStopRequested()) return;
         switch (detector.getLocation()) {
             case LEFT:
                 telemetry.addData("Left side","proceed");

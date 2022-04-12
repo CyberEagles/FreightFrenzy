@@ -49,7 +49,7 @@ public class CarouselStorageBlue extends LinearOpMode {
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0.6);
                 })
-                .strafeTo(new Vector2d(-61, 53.5))
+                .strafeTo(new Vector2d(-61.2, 53.7))
                 .waitSeconds(1.5)
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0);
@@ -75,7 +75,7 @@ public class CarouselStorageBlue extends LinearOpMode {
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0.6);
                 })
-                .strafeTo(new Vector2d(-61, 53.5))
+                .strafeTo(new Vector2d(-61.2, 53.7))
                 .waitSeconds(1.5)
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0);
@@ -84,14 +84,14 @@ public class CarouselStorageBlue extends LinearOpMode {
                     robot.Slides.setPower(-1.0);
                 })
                 .strafeTo(new Vector2d(-61, 24))
-                .splineToConstantHeading(new Vector2d(-28, 24), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-25, 24), Math.toRadians(0))
                 .build();
 
         TrajectorySequence Left = robot.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0.6);
                 })
-                .strafeTo(new Vector2d(-61, 53.5))
+                .strafeTo(new Vector2d(-61.2, 53.7))
                 .waitSeconds(1.5)
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0);

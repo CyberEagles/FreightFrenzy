@@ -49,7 +49,7 @@ public class CarouselBlue extends LinearOpMode {
                 .addDisplacementMarker(() -> {
                         robot.DuckyDropper.setPower(0.6);
                     })
-                .strafeTo(new Vector2d(-61, 53.5))
+                .strafeTo(new Vector2d(-61.2, 53.7))
                 .waitSeconds(1.5)
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0);
@@ -76,7 +76,7 @@ public class CarouselBlue extends LinearOpMode {
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0.6);
                 })
-                .strafeTo(new Vector2d(-61, 53.5))
+                .strafeTo(new Vector2d(-61.2, 53.7))
                 .waitSeconds(1.5)
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0);
@@ -93,7 +93,7 @@ public class CarouselBlue extends LinearOpMode {
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0.6);
                 })
-                .strafeTo(new Vector2d(-61, 53.5))
+                .strafeTo(new Vector2d(-61.2, 53.7))
                 .waitSeconds(1.5)
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0);

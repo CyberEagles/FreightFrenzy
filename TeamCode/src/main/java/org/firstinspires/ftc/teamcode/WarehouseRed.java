@@ -19,18 +19,18 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous
-public class WarehouseBlue extends LinearOpMode {
+public class WarehouseRed extends LinearOpMode {
     OpenCvCamera camera;
 
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive robot = new SampleMecanumDrive(hardwareMap);
-        WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 2");
+        WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         int cameraMonitorViewId = hardwareMap.appContext
                 .getResources().getIdentifier("cameraMonitorViewId",
                         "id", hardwareMap.appContext.getPackageName());
         OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
-        SecondWebcamPipelineBlue detector = new SecondWebcamPipelineBlue(telemetry);
+        opencvRed detector = new opencvRed(telemetry);
         camera.setPipeline(detector);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
@@ -46,7 +46,7 @@ public class WarehouseBlue extends LinearOpMode {
         telemetry.update();
         ElapsedTime stopTimer = new ElapsedTime();
 
-        Pose2d startPose = new Pose2d(9, 61, Math.toRadians(0));
+        Pose2d startPose = new Pose2d(9, -61, Math.toRadians(0));
         robot.setPoseEstimate(startPose);
 
         TrajectorySequence Right = robot.trajectorySequenceBuilder(startPose)
@@ -55,7 +55,7 @@ public class WarehouseBlue extends LinearOpMode {
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(-1);
                 })
-                .splineToLinearHeading(new Pose2d(-2.5, 39, Math.toRadians(70)), Math.toRadians(0),
+                .splineToLinearHeading(new Pose2d(-2.5, -39, Math.toRadians(-70)), Math.toRadians(0),
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.8))
                 .build();
@@ -66,7 +66,7 @@ public class WarehouseBlue extends LinearOpMode {
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(-1);
                 })
-                .splineToLinearHeading(new Pose2d(-3, 38.5, Math.toRadians(70)), Math.toRadians(0),
+                .splineToLinearHeading(new Pose2d(-3, -38.5, Math.toRadians(-70)), Math.toRadians(0),
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.8))
                 .build();
@@ -77,7 +77,7 @@ public class WarehouseBlue extends LinearOpMode {
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(-1);
                 })
-                .splineToLinearHeading(new Pose2d(-3.5, 37.5, Math.toRadians(70)), Math.toRadians(0),
+                .splineToLinearHeading(new Pose2d(-3.5, -37.5, Math.toRadians(-70)), Math.toRadians(0),
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.6, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.6))
                 .build();
@@ -104,12 +104,12 @@ public class WarehouseBlue extends LinearOpMode {
                     robot.Slides.setPower(1);
                     robot.Intake.setPower(0.9);
                 })
-                .splineToLinearHeading(new Pose2d(9, 61.5, Math.toRadians(0)), Math.toRadians(0))
-                .splineTo(new Vector2d(47, 61.5), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(9, -61.5, Math.toRadians(0)), Math.toRadians(0))
+                .splineTo(new Vector2d(47, -61.5), Math.toRadians(0))
                 .build();
 
         TrajectorySequence Blocks = robot.trajectorySequenceBuilder(Intake1.end())
-                .splineToConstantHeading(new Vector2d(9, 61.5), Math.toRadians(0), SampleMecanumDrive.getVelocityConstraint
+                .splineToConstantHeading(new Vector2d(9, -61.5), Math.toRadians(0), SampleMecanumDrive.getVelocityConstraint
                                 (DriveConstants.MAX_VEL*0.8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.8))
                 .addDisplacementMarker(()-> {
@@ -118,7 +118,7 @@ public class WarehouseBlue extends LinearOpMode {
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(-1);
                 })
-                .splineToLinearHeading(new Pose2d(-2.5, 39, Math.toRadians(70)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-2.5, -39, Math.toRadians(-70)), Math.toRadians(0))
                 .build();
 
         TrajectorySequence Intake2 = robot.trajectorySequenceBuilder(Blocks.end())
@@ -130,8 +130,8 @@ public class WarehouseBlue extends LinearOpMode {
                     robot.Slides.setPower(1);
                     robot.Intake.setPower(0.9);
                 })
-                .splineToLinearHeading(new Pose2d(9, 62, Math.toRadians(0)), Math.toRadians(0))
-                .splineTo(new Vector2d(57, 61.5), Math.toRadians(0),
+                .splineToLinearHeading(new Pose2d(9, -62, Math.toRadians(0)), Math.toRadians(0))
+                .splineTo(new Vector2d(57, -61.5), Math.toRadians(0),
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.8))
                 .build();
@@ -315,7 +315,7 @@ public class WarehouseBlue extends LinearOpMode {
         }
 
 
-        }
-        //camera.stopStreaming();
-
     }
+    //camera.stopStreaming();
+
+}
