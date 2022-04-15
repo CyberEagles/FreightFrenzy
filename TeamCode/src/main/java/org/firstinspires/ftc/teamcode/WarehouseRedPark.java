@@ -101,7 +101,7 @@ public class WarehouseRedPark extends LinearOpMode {
                 })
                 .splineToLinearHeading(new Pose2d(9, -61, Math.toRadians(0)), Math.toRadians(0))
                 .splineTo(new Vector2d(40, -61), Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(40, -38,Math.toRadians(90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(40, -38,Math.toRadians(-90)), Math.toRadians(90))
                 .strafeTo(new Vector2d(63, -38))
                 .build();
         switch (detector.getLocation()) {
