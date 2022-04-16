@@ -17,7 +17,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous
-public class WarehouseRedPark extends LinearOpMode {
+public class CarouselStorageRed extends LinearOpMode {
     OpenCvCamera camera;
 
     @Override
@@ -44,50 +44,85 @@ public class WarehouseRedPark extends LinearOpMode {
         telemetry.addData("Wait for the numbers","Don't run yet");
         telemetry.update();
 
-        Pose2d startPose = new Pose2d(9, -61, Math.toRadians(0));
+        Pose2d startPose = new Pose2d(-41, -61, Math.toRadians(0));
         robot.setPoseEstimate(startPose);
         TrajectorySequence Right = robot.trajectorySequenceBuilder(startPose)
-                .setTangent(Math.toRadians(180))
-                .addDisplacementMarker(()-> {
+                .strafeTo(new Vector2d(-40, -50))
+                .turn(Math.toRadians(-90))
+                .addDisplacementMarker(() -> {
+                    robot.DuckyDropper.setPower(-0.5);
+                })
+                .strafeTo(new Vector2d(-58, -58),
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.5))
+                .waitSeconds(2)
+                .addDisplacementMarker(() -> {
+                    robot.DuckyDropper.setPower(0);
+                    robot.Intake.setPower(-0.5);
+                    robot.lights.setPattern((RevBlinkinLedDriver.BlinkinPattern.CP1_HEARTBEAT_SLOW));
                     robot.Slides.setTargetPosition(-2000);
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.Slides.setPower(-1);
+                    robot.Slides.setPower(-1.0);
                 })
-                .splineToLinearHeading(new Pose2d(-3, -38.5, Math.toRadians(-70)), Math.toRadians(110),
+                .splineToLinearHeading(new Pose2d(-58, -22, Math.toRadians(180)), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-33, -22), Math.toRadians(0),
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.8))
+                .build();
+
+        TrajectorySequence Middle = robot.trajectorySequenceBuilder(startPose)
+                .strafeTo(new Vector2d(-40, -50))
+                .turn(Math.toRadians(-90))
+                .addDisplacementMarker(() -> {
+                    robot.DuckyDropper.setPower(-0.5);
+                })
+                .strafeTo(new Vector2d(-58, -58), SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.5))
+                .waitSeconds(2)
+                .addDisplacementMarker(() -> {
+                    robot.DuckyDropper.setPower(0);
+                    robot.Intake.setPower(-0.5);
+                    robot.lights.setPattern((RevBlinkinLedDriver.BlinkinPattern.CP1_HEARTBEAT_SLOW));
+                    robot.Slides.setTargetPosition(-1200);
+                    robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.Slides.setPower(-1.0);
+                })
+                .splineToLinearHeading(new Pose2d(-58, -22, Math.toRadians(180)), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-31, -22), Math.toRadians(0),
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.8))
+                .build();
+
+        TrajectorySequence Left = robot.trajectorySequenceBuilder(startPose)
+                .strafeTo(new Vector2d(-40, -50))
+                .turn(Math.toRadians(-90))
+                .addDisplacementMarker(() -> {
+                    robot.DuckyDropper.setPower(-0.5);
+                })
+                .strafeTo(new Vector2d(-58, -58), SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.5))
+                .waitSeconds(2)
+                .addDisplacementMarker(() -> {
+                    robot.DuckyDropper.setPower(0);
+                    robot.Intake.setPower(-0.5);
+                    robot.lights.setPattern((RevBlinkinLedDriver.BlinkinPattern.CP1_HEARTBEAT_SLOW));
+                    robot.Slides.setTargetPosition(-600);
+                    robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.Slides.setPower(-1.0);
+                })
+                .splineToLinearHeading(new Pose2d(-58, -22, Math.toRadians(180)), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-31, -22), Math.toRadians(0),
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.8))
                 .build();
 
 
-        TrajectorySequence Middle = robot.trajectorySequenceBuilder(startPose)
-                .setTangent(Math.toRadians(180))
-                .addDisplacementMarker(()-> {
-                    robot.Slides.setTargetPosition(-1200);
-                    robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.Slides.setPower(-1);
-                })
-                .splineToLinearHeading(new Pose2d(-4.4, -37.2, Math.toRadians(-65)), Math.toRadians(115),
-                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.6, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.6))
-                .build();
-
-
-        TrajectorySequence Left = robot.trajectorySequenceBuilder(startPose)
-                .setTangent(Math.toRadians(180))
-                .addDisplacementMarker(()-> {
-                    robot.Slides.setTargetPosition(-600);
-                    robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.Slides.setPower(-1);
-                })
-                .splineToLinearHeading(new Pose2d(-4, -37, Math.toRadians(-70)), Math.toRadians(110),
-                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.6, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.6))
-                .build();
+        Pose2d parkstartpose = Right.end();
 
         waitForStart();
         if(isStopRequested()) return;
-        Pose2d parkstartpose = Right.end();
-        switch (detector.getLocation()) {
+
+        switch (detector.getLocation()){
             case LEFT:
                 parkstartpose = Left.end();
             case MIDDLE:
@@ -95,21 +130,21 @@ public class WarehouseRedPark extends LinearOpMode {
             case RIGHT:
                 parkstartpose = Right.end();
         }
+
         TrajectorySequence Park = robot.trajectorySequenceBuilder(parkstartpose)
                 .waitSeconds(1)
                 .addDisplacementMarker(()->{
-                    robot.cargo.setPosition(1);
+                    robot.Intake.setPower(0);
                     robot.Slides.setTargetPosition(0);
-                    robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(1);
+                    robot.cargo.setPosition(1);
                 })
-                .splineToLinearHeading(new Pose2d(9, -61, Math.toRadians(0)), Math.toRadians(0))
-                .splineTo(new Vector2d(40, -61), Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(40, -38,Math.toRadians(-90)), Math.toRadians(90))
-                .strafeTo(new Vector2d(63, -38))
+                .splineToConstantHeading(new Vector2d(-63, -35), Math.toRadians(180))
                 .build();
+
         switch (detector.getLocation()) {
             case LEFT:
+                robot.capper.setPosition(0);
                 telemetry.addData("Left side","proceed");
                 telemetry.update();
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.LIME);
@@ -119,6 +154,7 @@ public class WarehouseRedPark extends LinearOpMode {
                 break;
 
             case RIGHT:
+                robot.capper.setPosition(0);
                 telemetry.addData("Right side","proceed");
                 telemetry.update();
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK);
@@ -128,23 +164,23 @@ public class WarehouseRedPark extends LinearOpMode {
                 break;
 
             case MIDDLE:
+                robot.capper.setPosition(0);
                 telemetry.addData("Middle Position","proceed");
                 telemetry.update();
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
                 robot.followTrajectorySequence(Middle);
                 robot.cargo.setPosition(0);
                 robot.followTrajectorySequence(Park);
-
                 break;
 
             case NOT_FOUND:
+                robot.capper.setPosition(0);
                 telemetry.addData("Not Found","proceed");
                 telemetry.update();
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.LIME);
                 robot.followTrajectorySequence(Right);
                 robot.cargo.setPosition(0);
                 robot.followTrajectorySequence(Park);
-
 
         }
         camera.stopStreaming();

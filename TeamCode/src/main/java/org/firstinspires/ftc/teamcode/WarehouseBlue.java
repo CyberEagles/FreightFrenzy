@@ -50,34 +50,37 @@ public class WarehouseBlue extends LinearOpMode {
         robot.setPoseEstimate(startPose);
 
         TrajectorySequence Right = robot.trajectorySequenceBuilder(startPose)
+                .setTangent(Math.toRadians(180))
                 .addDisplacementMarker(()-> {
                     robot.Slides.setTargetPosition(-2000);
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(-1);
                 })
-                .splineToLinearHeading(new Pose2d(-2.5, 39, Math.toRadians(70)), Math.toRadians(0),
+                .splineToLinearHeading(new Pose2d(-2.5, 39, Math.toRadians(70)), Math.toRadians(-110),
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.8))
                 .build();
 
         TrajectorySequence Middle = robot.trajectorySequenceBuilder(startPose)
+                .setTangent(Math.toRadians(180))
                 .addDisplacementMarker(()-> {
                     robot.Slides.setTargetPosition(-1200);
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(-1);
                 })
-                .splineToLinearHeading(new Pose2d(-3, 38.5, Math.toRadians(70)), Math.toRadians(0),
+                .splineToLinearHeading(new Pose2d(-3.5, 38, Math.toRadians(70)), Math.toRadians(-110),
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.8))
                 .build();
 
         TrajectorySequence Left = robot.trajectorySequenceBuilder(startPose)
+                .setTangent(Math.toRadians(180))
                 .addDisplacementMarker(()-> {
                     robot.Slides.setTargetPosition(-600);
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(-1);
                 })
-                .splineToLinearHeading(new Pose2d(-3.5, 37.5, Math.toRadians(70)), Math.toRadians(0),
+                .splineToLinearHeading(new Pose2d(-3.5, 37.5, Math.toRadians(70)), Math.toRadians(-110),
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.6, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.6))
                 .build();
@@ -105,11 +108,12 @@ public class WarehouseBlue extends LinearOpMode {
                     robot.Intake.setPower(0.9);
                 })
                 .splineToLinearHeading(new Pose2d(9, 61.5, Math.toRadians(0)), Math.toRadians(0))
-                .splineTo(new Vector2d(47, 61.5), Math.toRadians(0))
+                .splineTo(new Vector2d(52, 61.5), Math.toRadians(0))
                 .build();
 
         TrajectorySequence Blocks = robot.trajectorySequenceBuilder(Intake1.end())
-                .splineToConstantHeading(new Vector2d(9, 61.5), Math.toRadians(0), SampleMecanumDrive.getVelocityConstraint
+                .setTangent(Math.toRadians(180))
+                .splineToConstantHeading(new Vector2d(9, 61.5), Math.toRadians(180), SampleMecanumDrive.getVelocityConstraint
                                 (DriveConstants.MAX_VEL*0.8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.8))
                 .addDisplacementMarker(()-> {
@@ -118,7 +122,7 @@ public class WarehouseBlue extends LinearOpMode {
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(-1);
                 })
-                .splineToLinearHeading(new Pose2d(-2.5, 39, Math.toRadians(70)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-2.5, 39, Math.toRadians(70)), Math.toRadians(-110))
                 .build();
 
         TrajectorySequence Intake2 = robot.trajectorySequenceBuilder(Blocks.end())
