@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-@Disabled
+
 @TeleOp
 public class DrivingDuckRed extends OpMode
 {
@@ -140,6 +140,10 @@ public class DrivingDuckRed extends OpMode
 //        }
 //        else {
 //            linearSlidePower = Range.clip(gamepad2.left_stick_y, -0.5, 0.5);
+        if (intakePower != 0){
+            cap.setPosition(0);
+        }
+
         telemetry.addData("Distance to object", distance.getDistance(DistanceUnit.CM));
         telemetry.update();
         if (distance.getDistance(DistanceUnit.CM)<7) {
@@ -158,22 +162,22 @@ public class DrivingDuckRed extends OpMode
         telemetry.addData("Position",linearSlides.getCurrentPosition());
         if (gamepad2.left_bumper){
             lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK);
-            linearSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             linearSlides.setTargetPosition(-2100);
+            linearSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             linearSlides.setPower(-1.0);
 
         }
         else if (gamepad2.right_bumper){
             lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE_VIOLET);
-            linearSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             linearSlides.setTargetPosition(0);
+            linearSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             linearSlides.setPower(1);
 
         }
         else if (gamepad2.dpad_left){
             lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.DARK_GREEN);
-            linearSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             linearSlides.setTargetPosition(-600);
+            linearSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
             if (linearSlides.getCurrentPosition()<-500){
@@ -184,8 +188,8 @@ public class DrivingDuckRed extends OpMode
             }
         }
         else if (gamepad2.dpad_right){
-            linearSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             linearSlides.setTargetPosition(-1200);
+            linearSlides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.LIME);
             if (linearSlides.getCurrentPosition()<-1200){
                 linearSlides.setPower(1.0);

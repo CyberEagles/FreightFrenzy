@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -49,7 +50,8 @@ public class CarouselStorageBlue extends LinearOpMode {
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0.6);
                 })
-                .strafeTo(new Vector2d(-61.2, 53.7))
+                .strafeTo(new Vector2d(-61.2, 53.7), SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.5))
                 .waitSeconds(1.5)
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0);
@@ -75,7 +77,8 @@ public class CarouselStorageBlue extends LinearOpMode {
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0.6);
                 })
-                .strafeTo(new Vector2d(-61.2, 53.7))
+                .strafeTo(new Vector2d(-61.2, 53.7), SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.5))
                 .waitSeconds(1.5)
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0);
@@ -84,14 +87,15 @@ public class CarouselStorageBlue extends LinearOpMode {
                     robot.Slides.setPower(-1.0);
                 })
                 .strafeTo(new Vector2d(-61, 24))
-                .splineToConstantHeading(new Vector2d(-25, 24), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-30, 24), Math.toRadians(0))
                 .build();
 
         TrajectorySequence Left = robot.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0.6);
                 })
-                .strafeTo(new Vector2d(-61.2, 53.7))
+                .strafeTo(new Vector2d(-61.2, 53.7), SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.5))
                 .waitSeconds(1.5)
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0);

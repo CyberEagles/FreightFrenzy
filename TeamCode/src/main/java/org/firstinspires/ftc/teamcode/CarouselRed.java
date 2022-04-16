@@ -53,7 +53,8 @@ public class CarouselRed extends LinearOpMode {
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(-0.5);
                 })
-                .strafeTo(new Vector2d(-58, -58))
+                .strafeTo(new Vector2d(-58, -58), SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.5))
                 .waitSeconds(2)
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0);
@@ -76,7 +77,8 @@ public class CarouselRed extends LinearOpMode {
                     robot.DuckyDropper.setPower(-0.5);
                 })
 //                .splineToLinearHeading(new Pose2d(-60, -60, Math.toRadians(-90)), Math.toRadians(90))
-                .strafeTo(new Vector2d(-58, -58))
+                .strafeTo(new Vector2d(-58, -58), SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.5))
                 .waitSeconds(2)
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0);
@@ -99,7 +101,8 @@ public class CarouselRed extends LinearOpMode {
                     robot.DuckyDropper.setPower(-0.5);
                 })
 //                .splineToLinearHeading(new Pose2d(-60, -60, Math.toRadians(-90)), Math.toRadians(90))
-                .strafeTo(new Vector2d(-58, -58))
+                .strafeTo(new Vector2d(-58, -58), SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.5))
                 .waitSeconds(2)
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0);

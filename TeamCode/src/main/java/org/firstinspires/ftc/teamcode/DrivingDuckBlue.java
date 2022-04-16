@@ -136,18 +136,10 @@ public class DrivingDuckBlue extends OpMode
         rightBackPower = Range.clip(drive - turn + strafe, -1, 1);
         intakePower = Range.clip(gamepad2.right_stick_y, -0.9,0.9);
 
-//        if (gamepad2.left_bumper){
-//            linearSlidePower = 0.5;
-//        }
-//        else {
-//            linearSlidePower = Range.clip(gamepad2.left_stick_y, -0.5, 0.5);
-//        telemetry.addData("Distance to object", distance.getDistance(DistanceUnit.CM));
-//        telemetry.update();
-//        if (distance.getDistance(DistanceUnit.CM)<7) {
-//            telemetry.addData("Distance to object", distance.getDistance(DistanceUnit.CM));
-//            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
-//            telemetry.update();
-//        }
+
+        if (intakePower != 0){
+            cap.setPosition(0);
+        }
 
         if (distance.getDistance(DistanceUnit.CM) < 7){
             lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);

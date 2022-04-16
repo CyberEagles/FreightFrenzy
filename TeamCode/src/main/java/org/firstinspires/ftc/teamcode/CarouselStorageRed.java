@@ -139,7 +139,8 @@ public class CarouselStorageRed extends LinearOpMode {
                     robot.Slides.setPower(1);
                     robot.cargo.setPosition(1);
                 })
-                .splineToConstantHeading(new Vector2d(-63, -35), Math.toRadians(180))
+                .splineToConstantHeading(new Vector2d(-63, -22), Math.toRadians(180))
+                .strafeTo(new Vector2d(-63, -35))
                 .build();
 
         switch (detector.getLocation()) {

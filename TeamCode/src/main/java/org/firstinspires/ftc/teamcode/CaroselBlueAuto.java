@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 import java.util.List;
+@Disabled
 @Autonomous
 public class CaroselBlueAuto extends LinearOpMode {
     OdometerHardware robot = new OdometerHardware(this);

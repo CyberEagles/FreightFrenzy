@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-
+@Disabled
 @Autonomous
 public class AutoDistanceTest extends LinearOpMode {
     private Rev2mDistanceSensor distance = null;
