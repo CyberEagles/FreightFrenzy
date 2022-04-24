@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -58,8 +59,9 @@ public class CarouselBlue extends LinearOpMode {
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(-1.0);
                 })
-                .splineToLinearHeading(new Pose2d(-18, 53.5, Math.toRadians(90)), Math.toRadians(0))
-                .back(13.5)
+                .splineToLinearHeading(new Pose2d(-14, 60, Math.toRadians(90)), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-14, 50), Math.toRadians(-90), SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.8))
                 .build();
 
         TrajectorySequence Park = robot.trajectorySequenceBuilder(Right.end())
@@ -85,8 +87,10 @@ public class CarouselBlue extends LinearOpMode {
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(-1.0);
                 })
-                .splineToLinearHeading(new Pose2d(-18, 53.5, Math.toRadians(90)), Math.toRadians(0))
-                .back(13.5)
+                .splineToLinearHeading(new Pose2d(-14, 60, Math.toRadians(90)), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-14, 45), Math.toRadians(-90),
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.8))
                 .build();
 
         TrajectorySequence Left = robot.trajectorySequenceBuilder(startPose)
@@ -102,8 +106,10 @@ public class CarouselBlue extends LinearOpMode {
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(-1.0);
                 })
-                .splineToLinearHeading(new Pose2d(-18, 53.5, Math.toRadians(90)), Math.toRadians(0))
-                .back(14.5)
+                .splineToLinearHeading(new Pose2d(-14, 60, Math.toRadians(90)), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-14, 45), Math.toRadians(-90),
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.8))
                 .build();
 
 

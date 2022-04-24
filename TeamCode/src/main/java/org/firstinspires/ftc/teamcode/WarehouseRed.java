@@ -100,20 +100,21 @@ public class WarehouseRed extends LinearOpMode {
                 break;
         }
         TrajectorySequence Intake1 = robot.trajectorySequenceBuilder(intakeStartPose)
+                .forward(3)
                 .addDisplacementMarker(()->{
-                    robot.cargo.setPosition(1);
                     robot.Slides.setTargetPosition(0);
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(1);
                     robot.Intake.setPower(0.9);
                 })
-                .splineToLinearHeading(new Pose2d(9, -61.5, Math.toRadians(0)), Math.toRadians(0))
-                .splineTo(new Vector2d(47, -61.5), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(9, -62, Math.toRadians(0)), Math.toRadians(0))
+                .splineTo(new Vector2d(47, -62), Math.toRadians(0), SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.8))
                 .build();
 
         TrajectorySequence Blocks = robot.trajectorySequenceBuilder(Intake1.end())
                 .setTangent(Math.toRadians(180))
-                .splineToConstantHeading(new Vector2d(9, -61.5), Math.toRadians(180), SampleMecanumDrive.getVelocityConstraint
+                .splineToConstantHeading(new Vector2d(9, -62), Math.toRadians(180), SampleMecanumDrive.getVelocityConstraint
                                 (DriveConstants.MAX_VEL*0.8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.8))
                 .addDisplacementMarker(()-> {
@@ -126,16 +127,15 @@ public class WarehouseRed extends LinearOpMode {
                 .build();
 
         TrajectorySequence Intake2 = robot.trajectorySequenceBuilder(Blocks.end())
-                .waitSeconds(1)
+                .forward(3)
                 .addDisplacementMarker(()->{
-                    robot.cargo.setPosition(1);
                     robot.Slides.setTargetPosition(0);
                     robot.Slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.Slides.setPower(1);
                     robot.Intake.setPower(0.9);
                 })
                 .splineToLinearHeading(new Pose2d(9, -62, Math.toRadians(0)), Math.toRadians(0))
-                .splineTo(new Vector2d(57, -61.5), Math.toRadians(0),
+                .splineTo(new Vector2d(57, -62), Math.toRadians(0),
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.8, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.8))
                 .build();
@@ -150,6 +150,7 @@ public class WarehouseRed extends LinearOpMode {
                 robot.followTrajectorySequence(Left);
                 robot.cargo.setPosition(0);
                 sleep(1000);
+                robot.cargo.setPosition(1);
                 while (opModeIsActive() && !isStopRequested()) {
                     telemetry.addData("Distance", robot.distance.getDistance(DistanceUnit.CM));
                     telemetry.update();
@@ -194,6 +195,7 @@ public class WarehouseRed extends LinearOpMode {
                 robot.followTrajectorySequence(Right);
                 robot.cargo.setPosition(0);
                 sleep(1000);
+                robot.cargo.setPosition(1);
                 while (opModeIsActive() && !isStopRequested()) {
                     telemetry.addData("Distance", robot.distance.getDistance(DistanceUnit.CM));
                     telemetry.update();
@@ -237,6 +239,7 @@ public class WarehouseRed extends LinearOpMode {
                 robot.followTrajectorySequence(Middle);
                 robot.cargo.setPosition(0);
                 sleep(1000);
+                robot.cargo.setPosition(1);
                 while (opModeIsActive() && !isStopRequested()) {
                     telemetry.addData("Distance", robot.distance.getDistance(DistanceUnit.CM));
                     telemetry.update();
@@ -280,6 +283,7 @@ public class WarehouseRed extends LinearOpMode {
                 robot.followTrajectorySequence(Right);
                 robot.cargo.setPosition(0);
                 sleep(1000);
+                robot.cargo.setPosition(1);
                 while (opModeIsActive() && !isStopRequested()) {
                     telemetry.addData("Distance", robot.distance.getDistance(DistanceUnit.CM));
                     telemetry.update();

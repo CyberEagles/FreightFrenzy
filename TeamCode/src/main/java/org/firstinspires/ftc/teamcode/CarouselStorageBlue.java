@@ -48,11 +48,11 @@ public class CarouselStorageBlue extends LinearOpMode {
         robot.setPoseEstimate(startPose);
         TrajectorySequence Right = robot.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(() -> {
-                    robot.DuckyDropper.setPower(0.6);
+                    robot.DuckyDropper.setPower(0.5);
                 })
                 .strafeTo(new Vector2d(-61.2, 53.7), SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.5))
-                .waitSeconds(1.5)
+                .waitSeconds(2)
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0);
                     robot.Slides.setTargetPosition(-2000);
@@ -60,26 +60,26 @@ public class CarouselStorageBlue extends LinearOpMode {
                     robot.Slides.setPower(-1.0);
                 })
                 .strafeTo(new Vector2d(-61, 24))
-                .splineToConstantHeading(new Vector2d(-30, 24), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-29.5, 24), Math.toRadians(0))
                 .build();
 
         TrajectorySequence Park = robot.trajectorySequenceBuilder(Right.end())
-                .waitSeconds(1)
+                .forward(3)
                 .addDisplacementMarker(()->{
                     robot.Slides.setTargetPosition(0);
                     robot.Slides.setPower(1);
                     robot.cargo.setPosition(1);
                 })
-                .splineToConstantHeading(new Vector2d(-59, 40), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-59, 35), Math.toRadians(0))
                 .build();
 
         TrajectorySequence Middle = robot.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(() -> {
-                    robot.DuckyDropper.setPower(0.6);
+                    robot.DuckyDropper.setPower(0.5);
                 })
                 .strafeTo(new Vector2d(-61.2, 53.7), SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.5))
-                .waitSeconds(1.5)
+                .waitSeconds(2)
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0);
                     robot.Slides.setTargetPosition(-1200);
@@ -87,16 +87,16 @@ public class CarouselStorageBlue extends LinearOpMode {
                     robot.Slides.setPower(-1.0);
                 })
                 .strafeTo(new Vector2d(-61, 24))
-                .splineToConstantHeading(new Vector2d(-30, 24), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-29.5, 24), Math.toRadians(0))
                 .build();
 
         TrajectorySequence Left = robot.trajectorySequenceBuilder(startPose)
                 .addDisplacementMarker(() -> {
-                    robot.DuckyDropper.setPower(0.6);
+                    robot.DuckyDropper.setPower(0.5);
                 })
                 .strafeTo(new Vector2d(-61.2, 53.7), SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.5))
-                .waitSeconds(1.5)
+                .waitSeconds(2)
                 .addDisplacementMarker(() -> {
                     robot.DuckyDropper.setPower(0);
                     robot.Slides.setTargetPosition(-600);
@@ -104,7 +104,8 @@ public class CarouselStorageBlue extends LinearOpMode {
                     robot.Slides.setPower(-1.0);
                 })
                 .strafeTo(new Vector2d(-61, 24))
-                .splineToConstantHeading(new Vector2d(-28, 24), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-30, 24), Math.toRadians(0), SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL*0.6, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL*0.6))
                 .build();
 
 
@@ -117,6 +118,8 @@ public class CarouselStorageBlue extends LinearOpMode {
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.LIME);
                 robot.followTrajectorySequence(Left);
                 robot.cargo.setPosition(0);
+                sleep(1000);
+                robot.cargo.setPosition(1);
                 robot.followTrajectorySequence(Park);
                 break;
 
@@ -126,6 +129,8 @@ public class CarouselStorageBlue extends LinearOpMode {
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK);
                 robot.followTrajectorySequence(Right);
                 robot.cargo.setPosition(0);
+                sleep(1000);
+                robot.cargo.setPosition(1);
                 robot.followTrajectorySequence(Park);
                 break;
 
@@ -135,6 +140,8 @@ public class CarouselStorageBlue extends LinearOpMode {
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
                 robot.followTrajectorySequence(Middle);
                 robot.cargo.setPosition(0);
+                sleep(1000);
+                robot.cargo.setPosition(1);
                 robot.followTrajectorySequence(Park);
                 break;
 
@@ -144,6 +151,8 @@ public class CarouselStorageBlue extends LinearOpMode {
                 robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.LIME);
                 robot.followTrajectorySequence(Right);
                 robot.cargo.setPosition(0);
+                sleep(1000);
+                robot.cargo.setPosition(1);
                 robot.followTrajectorySequence(Park);
 
         }
